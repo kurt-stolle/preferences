@@ -1,0 +1,81 @@
+source ~/.vimrc
+
+"" JetBrains plugins 
+set ideajoin
+set ideamarks
+set ideastatusicon=gray
+set idearefactormode=keep
+
+"" IDEA-specific overwrites
+set number
+set nocompatible
+syntax enable
+syntax on
+
+"" Ensure essentials are se
+set wildmenu
+set surround
+set showmode
+set multiple-cursors
+
+"" IDEA-put to clipboard
+set clipboard+=ideaput
+
+"" Copied from Suggestions in the example .ideavimrc
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+set scrolloff=5
+
+" Do incremental searching.
+set incsearch
+
+"" Remapping, enables use for IDEA-actions without having to exit Vim emulation
+" Suggestions taken from various sources, see: https://jb.gg/share-ideavimrc
+nnoremap <leader>r :action ReformatCode<CR>
+
+" Mapping adapted from Vlasovskikh's post
+" See: https://gist.github.com/vlasovskikh/23df313739ad00e57c0935d54c346806
+nnoremap <Leader>f :action ShowNavBar<C>
+nnoremap <Leader>s :action FileStructurePopup<CR>
+nnoremap <Leader>v :action Vcs.QuickListPopupAction<CR>
+nnoremap <Leader>b :action Vcs.ShowBranches<CR>
+nnoremap <Leader>z :action ToggleZenMode<CR>
+
+" Mapping adapted from Yaoqing's post
+" See: https://gist.github.com/yaoqiangpersonal/ecf4a5b7bbe6c6d40edf2432f39288da
+nnoremap <Leader>sw :action SurroundWith<CR>
+nnoremap <Leader>oi :action OptimizeImports<CR>
+nnoremap <Leader>tz :action ToggleZenMode<CR>
+nnoremap <leader>ns :action NewScratchFile<CR>
+nnoremap <Leader>ic :action InspectCode<CR>
+
+nnoremap <CR> a<CR><Esc>k$
+nnoremap U <C-R>
+
+nnoremap <Leader>sd :action ShowUmlDiagram<CR>
+nnoremap <Leader>th :action TypeHierarchy<CR>
+nnoremap <Leader>fu :action FindUsages<CR>
+nnoremap <Leader>su :action ShowUsages<CR>
+nnoremap <Leader>mh :action MethodHierarchy<CR>
+nnoremap <Leader>ss :action ShowSettings<CR>
+nnoremap <Leader>sp :action ShowFilePath<CR>
+nnoremap <Leader>se :action ShowErrorDescription<CR>
+nnoremap <Leader>pm :action ShowPopupMenu<CR>
+nnoremap <Leader>rf :action RecentFiles<CR>
+nnoremap <Leader>jd :action QuickJavaDoc<CR>
+nnoremap <leader>a :action Annotate<CR>
+nnoremap <leader>sn :action ShowNavBar<CR>
+nnoremap <Leader>sp :action FileStructurePopup<CR>
+
+nnoremap <Leader>ga :action GotoAction<CR>
+nnoremap <Leader>gc :action GotoClass<CR>
+nnoremap <Leader>gf :action GotoFile<CR>
+
+nnoremap ge :action GotoNextError<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gs :action GotoSuperMethod<CR>
+nnoremap gd :action MethodDown<CR>
+nnoremap gu :action MethodUp<CR>
+
+nnoremap gn gt
+nnoremap gp gT
