@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 host="https://kurt-stolle.github.io/preferences"
 
@@ -8,7 +9,7 @@ wget -O $HOME/.tmux.conf "$host/tmux/config.conf" -q --show-progress
 tmux source-file $HOME/.tmux.conf
 
 # Vim configuration by Amix
-vimrtdir="$HOME/.vim-runtime"
+vimrtdir="$HOME/.vim_runtime"
 if [ ! -d $vimrtdir ]
 then
     echo "Installing Vim configuration: UltimateVim (See: https://github.com/amix/vimrc)"
