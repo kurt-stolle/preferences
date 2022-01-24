@@ -1,0 +1,26 @@
+# Bash style PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# OMZ setup
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="bira"
+CASE_SENSITIVE="false"
+HYPHEN_INSENSITIVE="true"
+
+zstyle ':omz:update' mode disabled  # disable automatic updates
+
+DISABLE_AUTO_TITLE="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="yyyy-mm-dd"
+
+plugins=(aws cp docker docker-compose git git-auto-fetch git-extras git-flow gitignore gnu-utils golang history history-substring-search iterm2 man nmap nvm npm pip postgres pylint python tmux ssh-agent terraform systemd tmux-cssh tmuxinator ubuntu ufw urltools vi-mode)
+
+source $ZSH/oh-my-zsh.sh
+
+# Preferred editor for local and remote sessions
+export EDITOR='vim'
+
+# Compilation flags
+export ARCHFLAGS="-arch x86_64"

@@ -1,11 +1,12 @@
 #!/bin/bash
-set -e
+set -euxo pipefail
 
-host="https://kurt-stolle.github.io/preferences"
+dir=`dirname $(readlink -f $0)`
+echo "Running linked installation @ $dir"
 
 # Tmux
 echo "Installing Tmux preferences"
-wget -O $HOME/.tmux.conf "$host/tmux/config.conf" -q --show-progress
+ln -s "$dir/tmux/config.conf" "$HOME/.tmux.conf"
 tmux source-file $HOME/.tmux.conf
 
 # Vim configuration by Amix
@@ -32,7 +33,10 @@ fi
 
 # IDEA Vim emulation
 echo "Installing Vim preferences for IntelliJ-based IDEs"
-wget -O $HOME/.ideavimrc "$host/vim/ideavimrc" -q --show-progress
+ln -s "$dir/vim/ideavimrc" "$HOME/.ideavimrc"
+
+# ZSH configuration
+cat "source $dir/zsh/config" >> "$HOME/.zshrc"
 
 # Completed
 echo "DONE"
