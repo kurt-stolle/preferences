@@ -36,7 +36,7 @@ echo "Installing Vim preferences for IntelliJ-based IDEs"
 ln -s "$dir/vim/ideavimrc" "$HOME/.ideavimrc"
 
 # ZSH configuration
-cat "source $dir/zsh/config" >> "$HOME/.zshrc"
+$dir/zsh/install.sh
 
 # Completed
 echo "DONE"
