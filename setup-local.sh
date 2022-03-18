@@ -6,6 +6,7 @@ echo "Running linked installation @ $dir"
 
 # Tmux
 echo "Installing Tmux preferences"
+rm -f "$HOME/.tmux.conf"
 ln -s "$dir/tmux/config.conf" "$HOME/.tmux.conf"
 tmux source-file $HOME/.tmux.conf
 
