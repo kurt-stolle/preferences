@@ -6,7 +6,8 @@ echo "Running linked installation @ $DIR"
 
 # Tmux
 echo "Installing Tmux preferences"
-ln -s "$DIR/tmux/config.conf" "$HOME/.tmux.conf"
+rm -f "$HOME/.tmux.conf"
+ln -s "$dir/tmux/config.conf" "$HOME/.tmux.conf"
 if [ -n $TMUX ] && tmux source-file $HOME/.tmux.conf
 
 # VIM configuration

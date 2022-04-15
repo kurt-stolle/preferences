@@ -1,5 +1,5 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+set -euxo pipefail
 
 
 dir=`dirname $(readlink -f $0)`
