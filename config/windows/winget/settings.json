@@ -1,0 +1,26 @@
+{
+    "logging": {
+        "level": [
+            "verbose",
+            "info",
+            "warning",
+            "error",
+            "critical"
+        ]
+    },
+    "telemetry": {
+        "disable": true
+    },
+    "experimentalFeatures": {
+        "experimentalMSStore": true
+    },
+    "installBehavior": {
+        "preferences": {
+            "locale": [
+                "en-US",
+                "nl-NL"
+            ],
+            "scope": "machine"
+        }
+    }
+}
