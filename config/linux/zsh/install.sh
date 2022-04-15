@@ -19,6 +19,7 @@ if ! [ -d "$OH_MY_ZSH" ]; then
     OMZ_INSTALL="$TEMP_DIR/install_omz.sh"
 
     wget -O "$OMZ_INSTALL" "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    chmod +x "$OMZ_INSTALL"
     $OMZ_INSTALL --unattended
 
     rm -rf $TEMP_DIR
