@@ -32,3 +32,8 @@ eval colors
 if [[ $- =~ i ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
   tmux new-session -As ssh_tmux
 fi
+
+# Temporary directory user-specific
+# Required for multi-user VSCode
+mkdir -p /tmp/$USER
+export TMPDIR=/tmp/$USER

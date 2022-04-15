@@ -39,7 +39,7 @@ ln -s "$DIR/vim/ideavimrc" "$IDEAVIMRC"
 
 # VIM preferences
 VIMRC="$HOME/.vimrc"
-SOURCE_PREFS="source $DIR/vim/config.vim"
+SOURCE_PREFS="source $DIR/config.vim"
 if grep -q -F "$SOURCE_PREFS" "$VIMRC"; then
     echo "VIM preferences already installed."
 else
