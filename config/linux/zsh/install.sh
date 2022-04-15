@@ -5,9 +5,8 @@ DIR=`dirname $(readlink -f $0)`
 ZSHRC="$HOME/.zshrc"
 
 # ZSH check
-ZSH=/bin/zsh
-if ! command -v $ZSH >/dev/null 2>&1 ; then
-    echo "Zsh is not installed @ $ZSH"
+if ! command -v zsh >/dev/null 2>&1 ; then
+    echo "Zsh is not installed"
     exit 1
 fi
 
@@ -15,7 +14,15 @@ fi
 OH_MY_ZSH="$HOME/.oh-my-zsh"
 if ! [ -d "$OH_MY_ZSH" ]; then
     echo "Installing Oh My ZSH (see: https://ohmyz.sh/)"
-    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+    TEMP_DIR=$(mktemp -d)
+    OMZ_INSTALL="$TEMP_DIR/install_omz.sh"
+
+    wget -O "$OMZ_INSTALL" "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    $OMZ_INSTALL --unattended
+
+    rm -rf $TEMP_DIR
+
 else
     echo "Oh my ZSH already installed"
 fi
