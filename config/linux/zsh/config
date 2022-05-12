@@ -29,9 +29,9 @@ export ARCHFLAGS="-arch x86_64"
 eval colors
 
 # Automatically attach to TMux if connecting via SSH and interactively
-if [[ $- =~ i ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
-  tmux new-session -As ssh_tmux
-fi
+# if [[ $- =~ i ]] && [[ -z "$TMUX" ]] && [[ -n "$SSH_CONNECTION" ]]; then
+#   tmux new-session -As ssh_tmux
+# fi
 
 # Temporary directory user-specific
 # Required for multi-user VSCode
