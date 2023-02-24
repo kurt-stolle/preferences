@@ -1,3 +1,3 @@
 " Light color theme
-set background=light
+set background=dark
 colorscheme peaksea
