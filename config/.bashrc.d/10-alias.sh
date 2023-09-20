@@ -22,9 +22,9 @@ alias ll='ls -Fls' # long listing formatalias la='ls -a'
 alias ll='ls -a -l' # long listing format
 
 # Files
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -iv'
+#alias cp='cp -i'
+#alias mv='mv -i'
+# alias rm='rm -iv'
 alias mkdir='mkdir -p'
 
 # Count all files (recursively) in the current folder
