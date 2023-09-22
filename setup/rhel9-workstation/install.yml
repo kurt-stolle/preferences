@@ -1,0 +1,146 @@
+- name: Install packages and binaries (RHEL9 workstation)
+  hosts: localhost
+  vars:
+    user_programs: /usr/local/bin
+    el9_packages:
+      - ImageMagick
+      - bat
+      - ffmpeg
+      - gcc-c++
+      - gnome-tweaks
+      - gthumb
+      - inotify-tools
+      - keepassxc
+      - kitty
+      - lazygit
+      - mediainfo
+      - nnn
+      - nodejs
+      - optipng
+      - pandoc
+      - ripgrep
+      - shellcheck
+      - stow
+      - tldr
+      - trash-cli
+      - xclip
+      - xdg-desktop-portal-gnome
+      - yt-dlp
+      - zathura
+      - zathura-bash-completion
+    npm_packages:
+      - bash-language-server@4.10.1
+      - prettier@2.8.8
+      - typescript-language-server@3.3.2
+      - typescript@5.1.6
+      - vscode-langservers-extracted@4.7.0
+      - yaml-language-server@1.11.0
+
+  tasks:
+    - name: Add the GitHub CLI repository
+      become: true
+      ansible.builtin.command:
+        cmd: dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+      args:
+        creates: /etc/yum.repos.d/gh-cli.repo
+
+    - name: Add the Flathub repository
+      community.general.flatpak_remote:
+        name: flathub
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+        state: present
+
+    - name: Add el9 only repositories
+      become: true
+      when: ansible_facts.distribution != "Fedora"
+      block:
+        - name: Enable the el9 CodeReady Linux Builder repository
+          ansible.builtin.command: dnf config-manager --enable crb
+          args:
+            creates: /etc/yum.repos.d/*-crb.repo
+
+        - name: Add the Extra Packages for Enterprise Linux repository
+          ansible.builtin.dnf:
+            name:
+              epel-release
+            state: present
+
+        - name: Add the el9 Lazygit repository
+          community.general.copr:
+            name: atim/lazygit
+            chroot: "epel-9-{{ ansible_architecture }}"
+
+        - name: Add the el9 RPM Fusion repository
+          ansible.builtin.dnf:
+            name: "{{ item }}"
+            state: present
+            disable_gpg_check: true
+          loop:
+            - https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm
+            - https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm
+
+    # =========================================================================
+    # Remove packages
+    # =========================================================================
+    - name: Remove unwanted desktop apps
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - cheese
+          - gedit
+          - rhythmbox
+          - totem
+        state: absent
+
+    # =========================================================================
+    # Install packages
+    # =========================================================================
+    - name: Upgrade all packages
+      become: true
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest # noqa package-latest
+
+    - name: Install el9 packages
+      become: true
+      ansible.builtin.dnf:
+        name: "{{ el9_packages }}"
+        state: present
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name: "{{ flatpak_packages }}"
+        state: present
+
+    - name: Install NPM global packages
+      become: true
+      loop: "{{ npm_packages }}"
+      community.general.npm:
+        name: "{{ item }}"
+        state: present
+        global: true
+
+    # =========================================================================
+    # Install binaries
+    # =========================================================================
+    - name: Check packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    # nnn plugins
+    - name: Download the latest nnn plugins
+      when: "'nnn' in ansible_facts.packages"
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs
+        dest: /tmp/getplugs
+        mode: '0755'
+
+    - name: Install nnn plugins
+      when: "'nnn' in ansible_facts.packages"
+      ansible.builtin.command: /tmp/getplugs
+      args:
+        creates: "{{ lookup('env', 'HOME') }}/.config/nnn/plugins"
+
+    - name: Refresh font cache
+      ansible.builtin.command: fc-cache -vf
+      changed_when: false
