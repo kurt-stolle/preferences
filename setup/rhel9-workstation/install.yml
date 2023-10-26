@@ -12,10 +12,7 @@
       - inotify-tools
       - keepassxc
       - kitty
-      - lazygit
       - mediainfo
-      - nnn
-      - nodejs
       - optipng
       - pandoc
       - ripgrep
@@ -28,13 +25,6 @@
       - yt-dlp
       - zathura
       - zathura-bash-completion
-    npm_packages:
-      - bash-language-server@4.10.1
-      - prettier@2.8.8
-      - typescript-language-server@3.3.2
-      - typescript@5.1.6
-      - vscode-langservers-extracted@4.7.0
-      - yaml-language-server@1.11.0
 
   tasks:
     - name: Add the GitHub CLI repository
@@ -64,11 +54,6 @@
             name:
               epel-release
             state: present
-
-        - name: Add the el9 Lazygit repository
-          community.general.copr:
-            name: atim/lazygit
-            chroot: "epel-9-{{ ansible_architecture }}"
 
         - name: Add the el9 RPM Fusion repository
           ansible.builtin.dnf:
@@ -112,34 +97,12 @@
         name: "{{ flatpak_packages }}"
         state: present
 
-    - name: Install NPM global packages
-      become: true
-      loop: "{{ npm_packages }}"
-      community.general.npm:
-        name: "{{ item }}"
-        state: present
-        global: true
-
     # =========================================================================
     # Install binaries
     # =========================================================================
     - name: Check packages
       ansible.builtin.package_facts:
         manager: auto
-
-    # nnn plugins
-    - name: Download the latest nnn plugins
-      when: "'nnn' in ansible_facts.packages"
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs
-        dest: /tmp/getplugs
-        mode: '0755'
-
-    - name: Install nnn plugins
-      when: "'nnn' in ansible_facts.packages"
-      ansible.builtin.command: /tmp/getplugs
-      args:
-        creates: "{{ lookup('env', 'HOME') }}/.config/nnn/plugins"
 
     - name: Refresh font cache
       ansible.builtin.command: fc-cache -vf
