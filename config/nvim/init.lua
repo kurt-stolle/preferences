@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 local opt = vim.opt
 
+opt.background = "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.termencoding = "utf-8"
@@ -90,7 +91,8 @@ vim.keymap.set('n', '<C-g>', "3<C-w>_")
 
 require("lazy").setup({
   -- theme
-  { "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
+  -- { "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
+  { "arzg/vim-colors-xcode", lazy = true, name = "xcode", priority=1000 },
 
   -- devicons
   { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -120,6 +122,14 @@ require("lazy").setup({
       require("lspconfig").pyright.setup {
         capabilities = capabilities,
       }
+    end
+  },
+
+  -- latex
+  {
+    "lervag/vimtex", 
+    init = function()
+      vim.g.vimtex_options = "go here"
     end
   },
 
@@ -299,16 +309,11 @@ require("lazy").setup({
   },
 
   -- show indent guides on blank lines
-  { "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      show_current_context = true,
-    }
-  },
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts={} },
 })
 
 -- set colour scheme
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "xcode"
 
 -- up / down with line wrap
 vim.keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })

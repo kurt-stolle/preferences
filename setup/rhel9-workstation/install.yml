@@ -3,6 +3,9 @@
   vars:
     user_programs: /usr/local/bin
     el9_packages:
+      - ripgrep
+      - luarocks
+      - luajit
       - ImageMagick
       - bat
       - ffmpeg
