@@ -97,6 +97,9 @@ require("lazy").setup({
   -- devicons
   { "nvim-tree/nvim-web-devicons", lazy = true },
 
+  -- Copilot
+  { "github/copilot.vim", lazy = false, priority=999 },
+
   -- snippets
   { "L3MON4D3/LuaSnip", event = "VeryLazy",
     config = function()
@@ -165,7 +168,7 @@ require("lazy").setup({
           documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert ({
-          ["<Tab>"] = cmp.mapping(function(fallback)
+          ["<c-cr>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
