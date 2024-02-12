@@ -10,3 +10,5 @@ fzf
 clang
 make
 cmake
+linux-headers
+build-base
