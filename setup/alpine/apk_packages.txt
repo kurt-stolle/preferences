@@ -1,0 +1,12 @@
+curl
+wget
+neovim
+fd
+wslu
+bash
+powershell
+
+fzf
+clang
+make
+cmake
