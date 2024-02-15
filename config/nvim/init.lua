@@ -96,6 +96,12 @@ require("lazy").setup({
 
   -- devicons
   { "nvim-tree/nvim-web-devicons", lazy = true },
+  { "nvim-tree/nvim-tree.lua", lazy = false, version="*", dependencies="nvim-tree/nvim-web-devicons", config = function()
+
+    end,
+  },
+
+
 
   -- Copilot
   { "github/copilot.vim", lazy = false, priority=999 },
