@@ -96,11 +96,10 @@ require("lazy").setup({
 
   -- devicons
   { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "nvim-tree/nvim-tree.lua", lazy = false, version="*", dependencies="nvim-tree/nvim-web-devicons", config = function()
+  { "nvim-tree/nvim-tree.lua", lazy = false, version="*", dependencies="nvim-tree/nvim-web-devicons", config = function() require("nvim-tree").setup() end },
 
-    end,
-  },
-
+  -- cheatsheet
+  { "sudormrfbin/cheatsheet.nvim", lazy = false, event = "BufWinEnter", config = function() require("cheatsheet").setup() end },
 
 
   -- Copilot
