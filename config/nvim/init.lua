@@ -68,18 +68,21 @@ vim.g.maplocalleader = ' '
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
--- local powershell_options = {
---  shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
---  shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
---  shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
---  shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
---  shellquote = "",
---  shellxquote = "",
---}
-
---for option, value in pairs(powershell_options) do
---  vim.opt[option] = value
---end
+if vim.fn.executable "pwsh" == 1 then
+  vim.opt.shell = "pwsh"
+  vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+  vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+  vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+elseif vim.fn.executable "bash" == 1 then
+  vim.opt.shell = "bash"
+  vim.opt.shellcmdflag = "-c"
+  vim.opt.shellredir = "2>&1 > %s"
+  vim.opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
+  vim.opt.shellquote = "'"
+  vim.opt.shellxquote = ""
+end
 
 vim.keymap.set('t', '<Esc>', "<C-\\><C-n>")
 vim.keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
@@ -138,7 +141,14 @@ require("lazy").setup({
     "lervag/vimtex", 
     init = function()
       vim.g.vimtex_options = "go here"
-      vim.g.vimtex_view_method = "zathura_simple"
+      
+      if vim.fn.executable "zathura" == 1 then
+        vim.g.vimtex_view_method = "zathura"
+      elseif vim.fn.executable "sioyek" == 1 then
+        vim.g.vimtex_view_method = "sioyek"
+      elseif vim.fn.executable "sioyek.exe" == 1 then
+        vim.g.vimtex_view_method = "sioyek.exe"
+      end
     end
   },
 

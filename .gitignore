@@ -1,4 +1,2 @@
-# NeoVIm
-lazy-lock.json
-plugins
 ./config/tmux/plugins/
+./config/nvim/lazy-lock.json
