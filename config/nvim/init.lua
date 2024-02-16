@@ -140,7 +140,11 @@ require("lazy").setup({
   -- mason
   {
     "williamboman/mason.nvim",
+    event = "VeryLazy",
     opts = function(_, opts)
+      if not opts.ensure_installed then
+        opts.ensure_installed = {}
+      end
       table.insert(opts.ensure_installed, "black")
     end,
   },
@@ -158,7 +162,6 @@ require("lazy").setup({
   -- language server protocol
   {
     "neovim/nvim-lspconfig",
-    lazy = false,
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
