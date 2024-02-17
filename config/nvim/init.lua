@@ -7,16 +7,20 @@
 -- win32yank for clipboard integration
 -- sharkdp/fd
 
+local opt = vim.opt
+local env = vim.env
+local keymap = vim.keymap
+
+-- lazy initialization
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
   vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable",
     lazypath })
 end
-vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+opt.rtp:prepend(env.LAZY or lazypath)
 
-local opt = vim.opt
-
+-- common settings
 opt.background = "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
@@ -68,48 +72,54 @@ opt.exrc = true
 -- set leader key to space
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
+keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
 if vim.fn.executable "pwsh" == 1 then
-  vim.opt.shell = "pwsh"
-  vim.opt.shellcmdflag =
+  opt.shell = "pwsh"
+  opt.shellcmdflag =
   "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-  vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-  vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-  vim.opt.shellquote = ""
-  vim.opt.shellxquote = ""
+  opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+  opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  opt.shellquote = ""
+  opt.shellxquote = ""
 elseif vim.fn.executable "zsh" == 1 then
-  vim.opt.shell = "zsh"
-  vim.opt.shellcmdflag = "-c"
-  vim.opt.shellredir = "2>&1 > %s"
-  vim.opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
-  vim.opt.shellquote = "'"
-  vim.opt.shellxquote = ""
+  opt.shell = "zsh"
+  opt.shellcmdflag = "-c"
+  opt.shellredir = "2>&1 > %s"
+  opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
+  opt.shellquote = "'"
+  opt.shellxquote = ""
 elseif vim.fn.executable "bash" == 1 then
-  vim.opt.shell = "bash"
-  vim.opt.shellcmdflag = "-c"
-  vim.opt.shellredir = "2>&1 > %s"
-  vim.opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
-  vim.opt.shellquote = "'"
-  vim.opt.shellxquote = ""
+  opt.shell = "bash"
+  opt.shellcmdflag = "-c"
+  opt.shellredir = "2>&1 > %s"
+  opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
+  opt.shellquote = "'"
+  opt.shellxquote = ""
 end
 
-vim.keymap.set('t', '<Esc>', "<C-\\><C-n>")
-vim.keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
+keymap.set('t', '<Esc>', "<C-\\><C-n>")
+keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
 
 -- minimize terminal split
-vim.keymap.set('n', '<C-g>', "3<C-w>_")
+keymap.set('n', '<C-g>', "3<C-w>_")
 
 -- plugins
 require("lazy").setup({
   -- theme
   -- { "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
-  { "arzg/vim-colors-xcode",       lazy = true, name = "xcode", priority = 1000 },
-
+  {
+    "arzg/vim-colors-xcode",
+    lazy = true,
+    name = "xcode",
+    priority = 1000
+  },
   -- devicons
-  { "nvim-tree/nvim-web-devicons", lazy = true },
-
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = true
+  },
   -- Nvim tree
   {
     "nvim-tree/nvim-tree.lua",
@@ -120,14 +130,20 @@ require("lazy").setup({
       require("nvim-tree").setup()
     end
   },
-
   -- cheatsheet
-  { "sudormrfbin/cheatsheet.nvim", lazy = false, event = "BufWinEnter", config = function() require("cheatsheet").setup() end },
-
-
+  {
+    "sudormrfbin/cheatsheet.nvim",
+    optional = true,
+    event = "BufWinEnter",
+    config = function()
+      require("cheatsheet").setup()
+    end
+  },
   -- Copilot
-  { "github/copilot.vim",          lazy = false, priority = 999 },
-
+  {
+    "github/copilot.vim",
+    optional = true,
+  },
   -- snippets
   {
     "L3MON4D3/LuaSnip",
@@ -136,7 +152,6 @@ require("lazy").setup({
       require("luasnip.loaders.from_lua").load({ paths = "./snippets" })
     end
   },
-
   -- mason
   {
     "williamboman/mason.nvim",
@@ -148,7 +163,6 @@ require("lazy").setup({
       table.insert(opts.ensure_installed, "black")
     end,
   },
-
   -- none-ls
   {
     "nvimtools/none-ls.nvim",
@@ -158,7 +172,6 @@ require("lazy").setup({
       table.insert(opts.sources, nls.builtins.formatting.black)
     end,
   },
-
   -- language server protocol
   {
     "neovim/nvim-lspconfig",
@@ -189,13 +202,11 @@ require("lazy").setup({
       }
     end
   },
-
   -- latex
   {
     "lervag/vimtex",
     init = function()
-      vim.g.vimtex_options = "go here"
-
+      vim.g.vimtex_options = "go here" -- ? from docs
       if vim.fn.executable "zathura" == 1 then
         vim.g.vimtex_view_method = "zathura"
       elseif vim.fn.executable "sioyek" == 1 then
@@ -205,7 +216,6 @@ require("lazy").setup({
       end
     end
   },
-
   -- autocompletion
   {
     "hrsh7th/nvim-cmp",
@@ -268,7 +278,6 @@ require("lazy").setup({
       })
     end
   },
-
   -- treesitter
   {
     "nvim-treesitter/nvim-treesitter",
@@ -293,7 +302,6 @@ require("lazy").setup({
       })
     end
   },
-
   -- debugger
   {
     "mfussenegger/nvim-dap",
@@ -375,7 +383,6 @@ require("lazy").setup({
     config = function()
     end,
   },
-
   -- fuzzy find
   {
     "nvim-telescope/telescope.nvim",
@@ -407,7 +414,6 @@ require("lazy").setup({
       require('telescope').load_extension('fzf')
     end
   },
-
   -- linting + formatting
   {
     "jose-elias-alvarez/null-ls.nvim",
@@ -423,7 +429,6 @@ require("lazy").setup({
       })
     end
   },
-
   -- terminal
   {
     "akinsho/toggleterm.nvim",
@@ -434,7 +439,6 @@ require("lazy").setup({
       open_mapping = "<c-s>", -- s for shell
     }
   },
-
   -- status line
   {
     "nvim-lualine/lualine.nvim",
@@ -448,7 +452,6 @@ require("lazy").setup({
       }
     },
   },
-
   -- bufferline
   {
     "akinsho/bufferline.nvim",
@@ -467,8 +470,8 @@ require("lazy").setup({
       }
     }
   },
-
   -- auto pairing
+  --[[
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
@@ -476,7 +479,7 @@ require("lazy").setup({
       require('mini.pairs').setup(opts)
     end
   },
-
+  --]]
   -- surround text object
   {
     "echasnovski/mini.surround",
@@ -484,7 +487,6 @@ require("lazy").setup({
       require('mini.surround').setup(opts)
     end
   },
-
   -- show indent guides on blank lines
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 })
@@ -493,8 +495,8 @@ require("lazy").setup({
 vim.cmd.colorscheme "xcode"
 
 -- up / down with line wrap
-vim.keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- highlight yanked text
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -507,8 +509,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- lsp keybindings
-vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
-vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
-vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code Action' })
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
-vim.keymap.set('n', '<leader>ff', vim.lsp.buf.format, { desc = 'Format Code' })
+keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
+keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
+keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code Action' })
+keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+keymap.set('n', '<leader>ff', vim.lsp.buf.format, { desc = 'Format Code' })
