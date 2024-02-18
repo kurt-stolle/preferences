@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -d ~/preferences/config/bashrc.d ]; then
+        for rc in ~/preferences/config/bashrc.d/*; do
+                if [ -f "$rc" ]; then
+                        . "$rc"
+                fi
+        done
+fi
+unset rc
+
