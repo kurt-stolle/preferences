@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+emulate sh -c '. ~/preferences/config/shenv'
+
 if [ -d ~/preferences/config/zshrc.d ]; then
         for rc in ~/preferences/config/zshrc.d/*; do
                 if [ -f "$rc" ]; then

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ~/preferences/config/shenv
+
 if [ -d ~/preferences/config/bashrc.d ]; then
         for rc in ~/preferences/config/bashrc.d/*; do
                 if [ -f "$rc" ]; then
