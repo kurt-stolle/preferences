@@ -841,3 +841,5 @@ $env.config = {
 
 source ~/.oh-my-posh.nu
 
+alias vi = nvim
+alias vim = nvim
