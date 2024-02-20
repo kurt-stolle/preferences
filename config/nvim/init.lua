@@ -111,29 +111,35 @@ require("lazy").setup({
   -- { "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
   {
     "arzg/vim-colors-xcode",
-    lazy = true,
+    lazy = false,
+    version = "*",
     name = "xcode",
     priority = 1000
   },
   -- devicons
   {
     "nvim-tree/nvim-web-devicons",
+    version = "*",
     lazy = true
   },
   -- Nvim tree
   {
     "nvim-tree/nvim-tree.lua",
-    lazy = false,
+    lazy=false,
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("nvim-tree").setup()
-    end
+    end,
+    keys = {
+      { "<leader>nt", "<cmd>NvimTreeToggle<CR>", desc = "Toggle Nvim Tree" },
+      { "<leader>nr", "<cmd>NvimTreeRefresh<CR>", desc = "Refresh Nvim Tree" },
+      { "<leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "Find File in Nvim Tree" },
+    },
   },
   -- cheatsheet
   {
     "sudormrfbin/cheatsheet.nvim",
-    optional = true,
     event = "BufWinEnter",
     config = function()
       require("cheatsheet").setup()
@@ -142,7 +148,8 @@ require("lazy").setup({
   -- Copilot
   {
     "github/copilot.vim",
-    optional = true,
+    priority = 999,
+    lazy = false
   },
   -- snippets
   {
@@ -164,6 +171,7 @@ require("lazy").setup({
     end,
   },
   -- none-ls
+  --[[
   {
     "nvimtools/none-ls.nvim",
     opts = function(_, opts)
@@ -171,7 +179,7 @@ require("lazy").setup({
       opts.sources = opts.sources or {}
       table.insert(opts.sources, nls.builtins.formatting.black)
     end,
-  },
+  },--]]
   -- language server protocol
   {
     "neovim/nvim-lspconfig",
@@ -241,14 +249,13 @@ require("lazy").setup({
           end
         },
         completion = {
-          --autocomplete = true
         },
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-          ["<c-cr>"] = cmp.mapping(function(fallback)
+          --[[[          ["<c-cr>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
@@ -264,6 +271,18 @@ require("lazy").setup({
               cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
               luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          --]]
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
             else
               fallback()
             end
@@ -390,7 +409,16 @@ require("lazy").setup({
     version = false,
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
-      { "<leader>sf",      "<cmd>Telescope git_files<cr>",                     desc = "Find Files (root dir)" },
+      --{ "<leader>sf",      "<cmd>Telescope git_files<cr>",                     desc = "Find Files (root dir)" },
+      --{"<leader>sf>",    "<cmd>Telescope find_files<cr>",                     desc = "Find Files" },
+      -- Use git_files first, if not found, use find_files
+      { "<leader>sf", function()
+        if vim.fn.isdirectory(".git") == 1 then
+          vim.cmd "Telescope git_files"
+        else
+          vim.cmd "Telescope find_files"
+        end
+      end, desc = "Find Files" },
       { "<leader><space>", "<cmd>Telescope buffers<cr>",                       desc = "Find Buffers" },
       { "<leader>sg",      "<cmd>Telescope live_grep<cr>",                     desc = "Search Project" },
       { "<leader>ss",      "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Search Document Symbols" },

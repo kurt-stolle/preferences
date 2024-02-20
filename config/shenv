@@ -1,0 +1,15 @@
+# Set TERM to support 256 colors
+export TERM=xterm-256color
+
+# Add local bin to path
+export PATH="$HOME/.local/bin:$PATH"
+
+# Include all files under shenv.d
+if [ -d ~/preferences/config/shenv.d ]; then
+        for rc in ~/preferences/config/shenv.d/*; do
+                if [ -f "$rc" ]; then
+                        . "$rc"
+                fi
+        done
+fi
+unset rc
