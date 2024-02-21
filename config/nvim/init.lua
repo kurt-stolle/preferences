@@ -75,7 +75,12 @@ vim.g.maplocalleader = ' '
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
-if vim.fn.executable "pwsh" == 1 then
+if vim.fn.executable "nu" == 1 then
+  -- NuShell
+  opt.shell = "nu"
+  opt.shellcmdflag = "-c"
+elseif vim.fn.executable "pwsh" == 1 then
+  -- PowerShell
   opt.shell = "pwsh"
   opt.shellcmdflag =
   "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
@@ -83,15 +88,11 @@ if vim.fn.executable "pwsh" == 1 then
   opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
   opt.shellquote = ""
   opt.shellxquote = ""
-elseif vim.fn.executable "zsh" == 1 then
-  opt.shell = "zsh"
-  opt.shellcmdflag = "-c"
-  opt.shellredir = "2>&1 > %s"
-  opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
-  opt.shellquote = "'"
-  opt.shellxquote = ""
-elseif vim.fn.executable "bash" == 1 then
-  opt.shell = "bash"
+else 
+  -- Default to a POSIX shell
+  opt.shell = (vim.fn.executable "bash" == 1 and "bash") or
+              (vim.fn.executable "ash" == 1 and "ash") or
+              "sh"
   opt.shellcmdflag = "-c"
   opt.shellredir = "2>&1 > %s"
   opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
