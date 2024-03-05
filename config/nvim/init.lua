@@ -75,11 +75,7 @@ vim.g.maplocalleader = ' '
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
-if vim.fn.executable "nu" == 1 then
-  -- NuShell
-  opt.shell = "nu"
-  opt.shellcmdflag = "-c"
-elseif vim.fn.executable "pwsh" == 1 then
+if vim.fn.executable "pwsh" == 1 then
   -- PowerShell
   opt.shell = "pwsh"
   opt.shellcmdflag =
@@ -88,6 +84,9 @@ elseif vim.fn.executable "pwsh" == 1 then
   opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
   opt.shellquote = ""
   opt.shellxquote = ""
+elseif vim.fn.executable "nu" == 1 then
+  -- NuShell
+  opt.shell = "nu"
 else 
   -- Default to a POSIX shell
   opt.shell = (vim.fn.executable "bash" == 1 and "bash") or
