@@ -75,23 +75,18 @@ vim.g.maplocalleader = ' '
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
-if vim.fn.executable "pwsh" == 1 then
+opt.shell = vim.env.SHELL or (vim.fn.executable "pwsh" == 1 and "pwsh") or (vim.fn.executable "bash" == 1 and "bash") or
+(vim.fn.executable "ash" == 1 and "ash") or "sh"
+if opt.shell == "pwsh" then
   -- PowerShell
-  opt.shell = "pwsh"
   opt.shellcmdflag =
   "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
   opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
   opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
   opt.shellquote = ""
   opt.shellxquote = ""
-elseif vim.fn.executable "nu" == 1 then
-  -- NuShell
-  opt.shell = "nu"
-else 
+else
   -- Default to a POSIX shell
-  opt.shell = (vim.fn.executable "bash" == 1 and "bash") or
-              (vim.fn.executable "ash" == 1 and "ash") or
-              "sh"
   opt.shellcmdflag = "-c"
   opt.shellredir = "2>&1 > %s"
   opt.shellpipe = "2>&1 | tee %s > /dev/null; exit ${PIPESTATUS[0]}"
@@ -125,15 +120,15 @@ require("lazy").setup({
   -- Nvim tree
   {
     "nvim-tree/nvim-tree.lua",
-    lazy=false,
+    lazy = false,
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("nvim-tree").setup()
     end,
     keys = {
-      { "<leader>nt", "<cmd>NvimTreeToggle<CR>", desc = "Toggle Nvim Tree" },
-      { "<leader>nr", "<cmd>NvimTreeRefresh<CR>", desc = "Refresh Nvim Tree" },
+      { "<leader>nt", "<cmd>NvimTreeToggle<CR>",   desc = "Toggle Nvim Tree" },
+      { "<leader>nr", "<cmd>NvimTreeRefresh<CR>",  desc = "Refresh Nvim Tree" },
       { "<leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "Find File in Nvim Tree" },
     },
   },
@@ -412,13 +407,17 @@ require("lazy").setup({
       --{ "<leader>sf",      "<cmd>Telescope git_files<cr>",                     desc = "Find Files (root dir)" },
       --{"<leader>sf>",    "<cmd>Telescope find_files<cr>",                     desc = "Find Files" },
       -- Use git_files first, if not found, use find_files
-      { "<leader>sf", function()
-        if vim.fn.isdirectory(".git") == 1 then
-          vim.cmd "Telescope git_files"
-        else
-          vim.cmd "Telescope find_files"
-        end
-      end, desc = "Find Files" },
+      {
+        "<leader>sf",
+        function()
+          if vim.fn.isdirectory(".git") == 1 then
+            vim.cmd "Telescope git_files"
+          else
+            vim.cmd "Telescope find_files"
+          end
+        end,
+        desc = "Find Files"
+      },
       { "<leader><space>", "<cmd>Telescope buffers<cr>",                       desc = "Find Buffers" },
       { "<leader>sg",      "<cmd>Telescope live_grep<cr>",                     desc = "Search Project" },
       { "<leader>ss",      "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Search Document Symbols" },
