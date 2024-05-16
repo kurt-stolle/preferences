@@ -21,7 +21,7 @@ end
 opt.rtp:prepend(env.LAZY or lazypath)
 
 -- common settings
-opt.background = "dark"
+opt.background = "light" --"dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.termencoding = "utf-8"
@@ -76,7 +76,7 @@ keymap.set({ 'n', 'v' }, '<Space>', '<Nop>')
 
 -- terminal settings
 opt.shell = vim.env.SHELL or (vim.fn.executable "pwsh" == 1 and "pwsh") or (vim.fn.executable "bash" == 1 and "bash") or
-(vim.fn.executable "ash" == 1 and "ash") or "sh"
+    (vim.fn.executable "ash" == 1 and "ash") or "sh"
 if opt.shell == "pwsh" then
   -- PowerShell
   opt.shellcmdflag =
@@ -109,6 +109,14 @@ require("lazy").setup({
     lazy = false,
     version = "*",
     name = "xcode",
+    priority = 1000
+  },
+  -- conda
+  {
+    "kmontocam/nvim-conda",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+    version = "*",
     priority = 1000
   },
   -- devicons
@@ -473,7 +481,7 @@ require("lazy").setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'onedark',
+        theme = 'onelight',
         conponent_separators = '|',
         section_separators = '',
       }
