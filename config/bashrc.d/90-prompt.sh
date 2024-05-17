@@ -1,3 +1,10 @@
+# Check if starship is installed, if it is, use it, otherwise use the custom prompt
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash)"
+    return
+fi
+
+# Starship not found, use custom prompt
 alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
 function __setprompt
 {

@@ -111,14 +111,6 @@ require("lazy").setup({
     name = "xcode",
     priority = 1000
   },
-  -- conda
-  {
-    "kmontocam/nvim-conda",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    lazy = false,
-    version = "*",
-    priority = 1000
-  },
   -- devicons
   {
     "nvim-tree/nvim-web-devicons",
@@ -173,16 +165,6 @@ require("lazy").setup({
       table.insert(opts.ensure_installed, "black")
     end,
   },
-  -- none-ls
-  --[[
-  {
-    "nvimtools/none-ls.nvim",
-    opts = function(_, opts)
-      local nls = require("null-ls")
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, nls.builtins.formatting.black)
-    end,
-  },--]]
   -- language server protocol
   {
     "neovim/nvim-lspconfig",
@@ -487,6 +469,78 @@ require("lazy").setup({
       }
     },
   },
+  -- conda
+  {
+    "kmontocam/nvim-conda",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = true,
+    version = "*",
+  },
+  -- hydra
+  {
+    "anuvyklack/hydra.nvim",
+    lazy = false,
+    version = "*",
+  },
+  -- auto pairing
+  {
+    "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    config = function(_, opts)
+      require('mini.pairs').setup(opts)
+    end
+  },
+  -- mini.surround
+  {
+    "echasnovski/mini.surround",
+    config = function(_, opts)
+      require('mini.surround').setup(opts)
+    end
+  },
+  -- mini.ai
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    dependencies = { "GCBallesteros/NotebookNavigator.nvim" },
+    opts = function()
+      local nn = require "notebook-navigator"
+      return { custom_textobjects = { h = nn.miniai_spec } }
+    end,
+  },
+  -- mini.hipatterns
+  {
+    "echasnovski/mini.hipatterns",
+    event = "VeryLazy",
+    dependencies = { "GCBallesteros/NotebookNavigator.nvim" },
+    opts = function()
+      local nn = require "notebook-navigator"
+      return { highlighters = { cells = nn.minihipatterns_spec } }
+    end,
+  },
+  -- interactive notebooks
+  {
+    "GCBallesteros/NotebookNavigator.nvim",
+    keys = {
+      { "]h",        function() require("notebook-navigator").move_cell "d" end },
+      { "[h",        function() require("notebook-navigator").move_cell "u" end },
+      { "<leader>X", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
+      { "<leader>x", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
+    },
+    dependencies = {
+      "echasnovski/mini.comment",
+      "echasnovski/mini.ai",
+      "echasnovski/mini.hipatterns",
+      "hkupty/iron.nvim", -- repl provider
+      -- "akinsho/toggleterm.nvim", -- alternative repl provider
+      -- "benlubas/molten-nvim", -- alternative repl provider
+      "anuvyklack/hydra.nvim",
+    },
+    event = "VeryLazy",
+    config = function()
+      local nn = require "notebook-navigator"
+      nn.setup({ activate_hydra_keys = "<leader>h", show_hydra_hint = true })
+    end,
+  },
   -- bufferline
   {
     "akinsho/bufferline.nvim",
@@ -504,23 +558,6 @@ require("lazy").setup({
         always_show_bufferline = false
       }
     }
-  },
-  -- auto pairing
-  --[[
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    config = function(_, opts)
-      require('mini.pairs').setup(opts)
-    end
-  },
-  --]]
-  -- surround text object
-  {
-    "echasnovski/mini.surround",
-    config = function(_, opts)
-      require('mini.surround').setup(opts)
-    end
   },
   -- show indent guides on blank lines
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
