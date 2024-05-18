@@ -1,9 +1,18 @@
-# Set TERM to support 256 colors
 export TERM=xterm-256color
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
-# Add local bin to path
-export PATH="$HOME/.local/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin" ]]
+then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+export PATH
+if ! [[ "$LD_LIBRARY_PATH" =~ "$HOME/.local/lib" ]]
+then
+    LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+fi
+export LD_LIBRARY_PATH
 
 # Include all files under shenv.d
 if [ -d ~/preferences/config/shenv.d ]; then
