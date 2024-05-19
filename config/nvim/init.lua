@@ -21,7 +21,7 @@ end
 opt.rtp:prepend(env.LAZY or lazypath)
 
 -- common settings
-opt.background = "light" --"dark"
+opt.background =  vim.env.THEME_COLOR or "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.termencoding = "utf-8"

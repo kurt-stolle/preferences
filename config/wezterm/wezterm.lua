@@ -14,12 +14,12 @@ function scheme_for_appearance(appearance)
     if appearance:find 'Dark' then
         return 'Builtin Dark'
     else
-        return 'Builtin Light'
+        return 'iTerm2 Tango Light'--'Tango Half Adapted'
     end
 end
 
 config.color_scheme = scheme_for_appearance(get_appearance())
-config.font = wezterm.font 'JetBrainsMono Nerd Font'
+config.font = wezterm.font('JetBrainsMono Nerd Font', {weight=500})
 config.enable_kitty_graphics = true
 config.window_padding = {
     left = 0,
@@ -42,7 +42,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     table.insert(config.launch_menu, { label = "Powershell", args = { "pwsh.exe", "-NoLogo" } })
 
     config.win32_system_backdrop = "Mica"
-    config.window_background_opacity= 0
+    config.window_background_opacity= get_appearance():find 'Dark' and 0 or 1
 
 else
     config.default_prog = { "bash" }
@@ -53,7 +53,7 @@ end
 
 -- Rendering
 for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
-  if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
+  if gpu.backend == 'Vulkan' and gpu.device_type == 'IntegratedGpu' then
     config.webgpu_preferred_adapter = gpu
     config.front_end = 'WebGpu'
     break
