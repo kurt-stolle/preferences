@@ -293,7 +293,7 @@ require("lazy").setup({
       require("nvim-treesitter.configs").setup({
         ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript" },
         auto_install = true,
-        highlight = { enable = true, additional_vim_regex_highlighting = false },
+        highlight = { enable = true, additional_vim_regex_highlighting = true },
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -463,7 +463,7 @@ require("lazy").setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'onelight',
+        theme = opt.background == 'light' and 'onelight' or 'onedark';
         conponent_separators = '|',
         section_separators = '',
       }
@@ -473,7 +473,7 @@ require("lazy").setup({
   {
     "kmontocam/nvim-conda",
     dependencies = { "nvim-lua/plenary.nvim" },
-    lazy = true,
+    lazy = false,
     version = "*",
   },
   -- hydra
@@ -483,13 +483,13 @@ require("lazy").setup({
     version = "*",
   },
   -- auto pairing
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    config = function(_, opts)
-      require('mini.pairs').setup(opts)
-    end
-  },
+  --{
+  --  "echasnovski/mini.pairs",
+  --  event = "VeryLazy",
+  --  config = function(_, opts)
+  --    require('mini.pairs').setup(opts)
+  --  end
+  --},
   -- mini.surround
   {
     "echasnovski/mini.surround",
@@ -530,8 +530,8 @@ require("lazy").setup({
       "echasnovski/mini.comment",
       "echasnovski/mini.ai",
       "echasnovski/mini.hipatterns",
-      "hkupty/iron.nvim", -- repl provider
-      -- "akinsho/toggleterm.nvim", -- alternative repl provider
+      -- "hkupty/iron.nvim", -- repl provider
+      "akinsho/toggleterm.nvim", -- alternative repl provider
       -- "benlubas/molten-nvim", -- alternative repl provider
       "anuvyklack/hydra.nvim",
     },
