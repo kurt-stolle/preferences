@@ -24,7 +24,7 @@ opt.rtp:prepend(env.LAZY or lazypath)
 opt.background =  vim.env.THEME_COLOR or "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
-opt.termencoding = "utf-8"
+-- (deprecated?) opt.termencoding = "utf-8"
 
 opt.clipboard = "unnamedplus"
 opt.completeopt = "menu,menuone,noselect"
