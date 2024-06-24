@@ -40,5 +40,16 @@ else
     echo "> TPM already installed."
 fi
 
+# Check whether a symlink exists from $HOME/.tmux to $CONFIG_DIR
+CONFIG_SYMLINK="$HOME/.tmux"
+echo "Checking for symlink $CONFIG_SYMLINK..."
+if [ ! -L "$CONFIG_SYMLINK" ]; then
+    echo "> Symlink not found @ $CONFIG_SYMLINK"
+    echo "> Creating symlink..."
+    ln -s $CONFIG_DIR $CONFIG_SYMLINK
+else
+    echo "> Symlink already exists."
+fi
+
 # Done!
 echo "Tmux preferences installed! Remember to install plugins: <leader> I"
