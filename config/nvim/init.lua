@@ -21,7 +21,7 @@ end
 opt.rtp:prepend(env.LAZY or lazypath)
 
 -- common settings
-opt.background =  vim.env.THEME_COLOR or "dark"
+opt.background = vim.env.THEME_COLOR or "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 -- (deprecated?) opt.termencoding = "utf-8"
@@ -69,6 +69,10 @@ opt.undolevels = 10000
 opt.secure = true
 opt.exrc = true
 
+-- disable netrw, we use `nvim-tree` instead
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- set leader key to space
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -111,12 +115,11 @@ require("lazy").setup({
     name = "xcode",
     priority = 1000
   },
+  -- nvim nio (async io package)
+  -- https://github.com/nvim-neotest/nvim-nio
+  { "nvim-neotest/nvim-nio" },
   -- devicons
-  {
-    "nvim-tree/nvim-web-devicons",
-    version = "*",
-    lazy = true
-  },
+  { "nvim-tree/nvim-web-devicons" },
   -- Nvim tree
   {
     "nvim-tree/nvim-tree.lua",
@@ -463,7 +466,7 @@ require("lazy").setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = opt.background == 'light' and 'onelight' or 'onedark';
+        theme = opt.background == 'light' and 'onelight' or 'onedark',
         conponent_separators = '|',
         section_separators = '',
       }
@@ -561,6 +564,22 @@ require("lazy").setup({
   },
   -- show indent guides on blank lines
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+  -- tmux
+  {
+    "aserowy/tmux.nvim",
+    config = function()
+      require("tmux").setup {
+        copy_sync = {
+          enable = true,
+          sync_clipboard = false,
+          sync_registers = true,
+        },
+        resize = {
+          enable_default_keybindings = false,
+        },
+      }
+    end,
+  },
 })
 
 -- set colour scheme
