@@ -1,6 +1,7 @@
 keybinds clear-defaults=true {
     tmux {
         // Zellij modes
+        bind "Esc" { SwitchToMode "Normal"; }
         bind "Ctrl p" { SwitchToMode "Pane"; }
         bind "Ctrl n" { SwitchToMode "Resize"; }
         bind "Ctrl s" { SwitchToMode "Scroll"; }
@@ -149,10 +150,12 @@ keybinds clear-defaults=true {
         bind "Enter" { SwitchToMode "Search"; }
     }
     renametab {
-        bind "Esc" { UndoRenameTab; SwitchToMode "Tab"; }
+        bind "Esc" { UndoRenameTab; SwitchToMode "Normal"; }
+        bind "Enter" { SwitchToMode "Normal"; }
     }
     renamepane {
-        bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
+        bind "Esc" { UndoRenamePane; SwitchToMode "Normal"; }
+        bind "Enter" { SwitchToMode "Normal"; }
     }
     session {
         bind "Ctrl c" "Esc" { SwitchToMode "Normal"; }
@@ -168,9 +171,6 @@ keybinds clear-defaults=true {
     }
     shared_except "normal" "locked" {
         bind "Enter" { SwitchToMode "Normal"; }
-    }
-    shared_except "tmux" {
-        bind "Esc" { SwitchToMode "Tmux"; }
     }
     shared_except "tmux" "locked" {
         bind "Ctrl a" { SwitchToMode "Tmux"; }
