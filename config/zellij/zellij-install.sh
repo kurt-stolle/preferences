@@ -8,17 +8,38 @@ if [ ! -d "$CONFIG_DIR" ]; then
 fi
 
 # Path to the Zellij configuration file
-TGT_CONFIG="$CONFIG_DIR/config.kdl"
-SRC_CONFIG="$HOME/preferences/config/zellij/config.kdl"
-
-# Check whether the Zellij configuration file sources our configurations
+TGT="$CONFIG_DIR/config.kdl"
+SRC="$HOME/preferences/config/zellij/config.kdl"
 echo "Checking for our own configurations ..."
-if [ ! -f "$TGT_CONFIG" ]; then
-    echo "> Creating $TGT_CONFIG..."
-    ln -s $SRC_CONFIG $TGT_CONFIG
+if [ ! -f "$TGT" ]; then
+    echo "> Creating $TGT..."
+    ln -s $SRC $TGT
 else
-    echo "> Found $TGT_CONFIG."
+    echo "> Found $TGT."
 fi
+
+# Path to the Zellij layouts directories
+TGT="$CONFIG_DIR/layouts"
+SRC="$HOME/preferences/config/zellij/layouts"
+echo "Checking for our own configurations ..."
+if [ ! -f "$TGT" ]; then
+    echo "> Creating $TGT..."
+    ln -s $SRC $TGT
+else
+    echo "> Found $TGT."
+fi
+
+# Path to the Zellij themes directories
+TGT="$CONFIG_DIR/themes"
+SRC="$HOME/preferences/config/zellij/themes"
+echo "Checking for our own configurations ..."
+if [ ! -f "$TGT" ]; then
+    echo "> Creating $TGT..."
+    ln -s $SRC $TGT
+else
+    echo "> Found $TGT."
+fi
+
 
 # Done!
 echo "Zellij preferences installed!"

@@ -1,0 +1,30 @@
+// Based on examples from: https://zellij.dev/documentation/theme-gallery
+
+themes {
+    kurt-light {
+        bg "#acb0be"
+        fg "#acb0be"
+        red "#d20f39"
+        green "#40a02b"
+        blue "#1e66f5"
+        yellow "#df8e1d"
+        magenta "#ea76cb"
+        orange "#fe640b"
+        cyan "#04a5e5"
+        black "#dce0e8"
+        white "#4c4f69"
+    }
+    kurt-dark {
+        bg "#181825"
+        fg "#cdd6f4"
+        red "#f38ba8"
+        green "#a6e3a1"
+        blue "#89b4fa"
+        yellow "#f9e2af"
+        magenta "#f5c2e7"
+        orange "#fab387"
+        cyan "#89dceb"
+        black "#181825"
+        white "#cdd6f4"
+    }
+}

@@ -1,0 +1,20 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+    tab_template name="nnn-sidebar" {
+        pane split_direction="vertical" {
+            pane size="20%" borderless=true command="nnn"
+            children
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+    tab {
+        pane focus=true
+    }
+}
