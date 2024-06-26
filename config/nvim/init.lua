@@ -107,14 +107,21 @@ keymap.set('n', '<C-g>', "3<C-w>_")
 -- plugins
 require("lazy").setup({
   -- theme
-  -- { "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
   {
+    "sonph/onehalf",
+    priority = 10000,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/vim")
+    end
+  },
+  --{ "catppuccin/nvim", lazy = true, name = "catppuccin", priority=1000 },
+  --[[{
     "arzg/vim-colors-xcode",
     lazy = false,
     version = "*",
     name = "xcode",
     priority = 1000
-  },
+  },]]
   -- nvim nio (async io package)
   -- https://github.com/nvim-neotest/nvim-nio
   { "nvim-neotest/nvim-nio" },
@@ -583,7 +590,7 @@ require("lazy").setup({
 })
 
 -- set colour scheme
-vim.cmd.colorscheme "xcode"
+vim.cmd.colorscheme "onehalfdark"
 
 -- up / down with line wrap
 keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
