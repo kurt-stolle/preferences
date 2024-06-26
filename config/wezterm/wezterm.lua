@@ -23,7 +23,7 @@ end
 
 if get_appearance():lower():find 'light' then
     --config.win32_system_backdrop = "Mica"
-    config.color_scheme = 'iTerm2 Tango Light'
+    config.color_scheme = 'Catppuccin Latte'-- 'iTerm2 Tango Light'
     config.window_background_opacity = 1.0
     config.foreground_text_hsb = {
         hue = 1.0,
@@ -31,9 +31,18 @@ if get_appearance():lower():find 'light' then
         brightness = 0.8,
     }
 else
+    local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
+    theme.background = "#000000"
+    --custom.tab_bar.background = "#040404"
+    --custom.tab_bar.inactive_tab.bg_color = "#0f0f0f"
+    --custom.tab_bar.new_tab.bg_color = "#080808"
+
     config.win32_system_backdrop = 'Acrylic'
-    config.color_scheme = 'iTerm2 Tango Dark'
-    config.window_background_opacity = 0.9
+    config.color_schemes = {
+        ["Catppuccin Mocha Dark"] = theme
+    }
+    config.color_scheme = 'Catppuccin Mocha Dark'-- 'iTerm2 Tango Dark'
+    config.window_background_opacity = 1.0--0.2
     config.foreground_text_hsb = {
         hue = 1.0,
         saturation = 1.2,
@@ -66,7 +75,7 @@ local function find_gpu(spec)
 	return nil
 end
 
-for _, spec in ipairs {{backend="Vulkan", device_type="DiscreteGpu"}, {backend="Vulkan", device_type="IntegratedGpu"}} do
+for _, spec in ipairs {{backend="Vulkan", device_type="IntegratedGpu"}, {backend="Vulkan", device_type="DiscreteGpu"}} do
 	local gpu = find_gpu( spec)
 	if gpu then
 		config.webgpu_preferred_adapter = gpu

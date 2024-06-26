@@ -107,8 +107,26 @@ keymap.set('n', '<C-g>', "3<C-w>_")
 -- plugins
 require("lazy").setup({
   -- themes
-  { "catppuccin/nvim", lazy = true, priority=1000, name="catppuccin" },
-  { "arzg/vim-colors-xcode", lazy = true, priority = 1000, name="xcode" },
+  {
+    "catppuccin/nvim",
+    lazy = true,
+    priority = 1000,
+    name = "catppuccin",
+    config = function()
+      require("catppuccin").setup({
+        color_overrides = {
+          mocha = {
+            base = "#000000"
+          }
+        },
+        integrations = {
+          mason = true,
+
+        },
+      })
+    end
+  },
+  { "arzg/vim-colors-xcode",      lazy = true, priority = 1000, name = "xcode" },
   -- nvim nio (async io package)
   -- https://github.com/nvim-neotest/nvim-nio
   { "nvim-neotest/nvim-nio" },
@@ -460,7 +478,7 @@ require("lazy").setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = opt.background == 'light' and 'onelight' or 'onedark',
+        theme = opt.background == 'light' and 'onelight' or 'catppuccin',
         conponent_separators = '|',
         section_separators = '',
       }
