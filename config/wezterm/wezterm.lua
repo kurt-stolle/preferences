@@ -1,7 +1,7 @@
--- Wez's Terminal Emulator
+-- Wez"s Terminal Emulator
 -- https://wezfurlong.org/wezterm/
 
-local wez = require 'wezterm'
+local wez = require "wezterm"
 local config = wez.config_builder()
 
 config:set_strict_mode(true)
@@ -12,18 +12,18 @@ local function get_appearance()
         return wez.gui.get_appearance()
     end
     -- Second, check the COLOR_THEME environment variable
-    if os.getenv('COLOR_THEME') then
-        return os.getenv('COLOR_THEME')
+    if os.getenv("COLOR_THEME") then
+        return os.getenv("COLOR_THEME")
     end
     -- Fallback to dark mode
-    return 'Dark'
+    return "Dark"
 end
 
 -- Appearance
 
-if get_appearance():lower():find 'light' then
+if get_appearance():lower():find "light" then
     --config.win32_system_backdrop = "Mica"
-    config.color_scheme = 'Catppuccin Latte'-- 'iTerm2 Tango Light'
+    config.color_scheme = "Catppuccin Latte" -- "iTerm2 Tango Light"
     config.window_background_opacity = 1.0
     config.foreground_text_hsb = {
         hue = 1.0,
@@ -37,21 +37,22 @@ else
     --custom.tab_bar.inactive_tab.bg_color = "#0f0f0f"
     --custom.tab_bar.new_tab.bg_color = "#080808"
 
-    config.win32_system_backdrop = 'Acrylic'
+    config.win32_system_backdrop = "Acrylic"
     config.color_schemes = {
         ["Catppuccin Mocha Dark"] = theme
     }
-    config.color_scheme = 'Catppuccin Mocha Dark'-- 'iTerm2 Tango Dark'
-    config.window_background_opacity = 1.0--0.2
+    config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
+    config.window_background_opacity = 1.0        --0.2
     config.foreground_text_hsb = {
         hue = 1.0,
         saturation = 1.2,
         brightness = 1.5,
     }
 end
-config.font = wez.font('JetBrainsMono Nerd Font', { weight = 500 })
+config.font = wez.font("JetBrainsMono Nerd Font", { weight = 500 })
 config.font_size = 10.0
-config.default_cursor_style = 'BlinkingBar'
+config.window_decorations = "NONE"
+config.default_cursor_style = "BlinkingBar"
 config.enable_kitty_graphics = true
 config.window_padding = {
     left = 0,
@@ -59,7 +60,7 @@ config.window_padding = {
     top = 0,
     bottom = 0,
 }
-config.hide_tab_bar_if_only_one_tab = false
+config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
@@ -68,60 +69,35 @@ config.launch_menu = {}
 
 -- Rendering
 local function find_gpu(spec)
-	for _, gpu in ipairs(wez.gui.enumerate_gpus()) do
-	    if gpu.backend:find (spec.backend) and gpu.device_type:find (spec.device_type) then
-		return gpu
-	    end
-	end
-	return nil
+    for _, gpu in ipairs(wez.gui.enumerate_gpus()) do
+        if gpu.backend:find(spec.backend) and gpu.device_type:find(spec.device_type) then
+            return gpu
+        end
+    end
+    return nil
 end
 
-for _, spec in ipairs {{backend="Vulkan", device_type="IntegratedGpu"}, {backend="Vulkan", device_type="DiscreteGpu"}} do
-	local gpu = find_gpu( spec)
-	if gpu then
-		config.webgpu_preferred_adapter = gpu
-		break
-	end
+INTEGRATED_GPU = { backend = "Vulkan", device_type = "IntegratedGpu" }
+DISCRETE_GPU = { backend = "Vulkan", device_type = "DiscreteGpu" }
+
+for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU } do
+    local gpu = find_gpu(spec)
+    if gpu then
+        config.webgpu_preferred_adapter = gpu
+        config.front_end = "WebGpu"
+        config.webgpu_power_preference = "HighPerformance"
+        break
+    end
 end
 
 config.max_fps = 60
-config.front_end = 'WebGpu'
-config.webgpu_power_preference = "HighPerformance"
 
-
--- Keybindings
-config.disable_default_key_bindings = true
-config.keys = {
-    -- Show launcher
-    {
-        key = 'Space',
-        mods = 'CTRL|SHIFT',
-        action = wez.action.ShowLauncherArgs {
-            flags = 'LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES',
-        }
-    },
-    -- Show tab switcher
-    {
-        key = 'Tab',
-        mods = 'CTRL|SHIFT',
-        action = wez.action.ShowTabNavigator,
-    },
-    -- Show command palette
-    {
-        key = 'Space',
-        mods = 'CTRL',
-        action = wez.action.ActivateCommandPalette,
-    },
-    -- Copy/Paste
-    { key = 'C', mods = 'CTRL|SHIFT', action = wez.action.CopyTo 'Clipboard' },
-    { key = 'V', mods = 'CTRL|SHIFT', action = wez.action.PasteFrom 'Clipboard' },
-
-}
+-- Bindings
 config.mouse_bindings = {
     {
-        event = { Down = { streak = 3, button = 'Left' } },
-        action = wez.action.SelectTextAtMouseCursor 'SemanticZone',
-        mods = 'NONE',
+        event = { Down = { streak = 3, button = "Left" } },
+        action = wez.action.SelectTextAtMouseCursor "SemanticZone",
+        mods = "NONE",
     },
     {
         event = { Down = { streak = 1, button = "Right" } },
@@ -137,10 +113,59 @@ config.mouse_bindings = {
         end),
     },
 }
+
+config.disable_default_key_bindings = true
+config.keys = {
+    -- Copy/Paste
+    { key = "c",     mods = "CTRL|SHIFT",   action = wez.action.CopyTo "Clipboard" },
+    { key = "v",     mods = "CTRL|SHIFT",   action = wez.action.PasteFrom "Clipboard" },
+    -- Show launcher
+    { key = "c",   mods = "LEADER|CTRL",  action = wez.action.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES", } },
+    -- Show tab switcher
+    { key = "Tab",   mods = "LEADER",       action = wez.action.ShowTabNavigator },
+    -- Show command palette
+    { key = "Space", mods = "LEADER",       action = wez.action.ActivateCommandPalette },
+    -- Tmux-like Keybindings
+    -- https://gist.github.com/quangIO/556fa4abca46faf40092282d0c11a367
+    { key = "\"",    mods = "LEADER|SHIFT",       action = wez.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
+    { key = "%",    mods = "LEADER|SHIFT",       action = wez.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
+    { key = "z",     mods = "LEADER",       action = "TogglePaneZoomState" },
+    --{ key = "c",     mods = "LEADER",       action = wez.action { SpawnTab = "CurrentPaneDomain" } },
+    { key = "h",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Left" } },
+    { key = "j",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Down" } },
+    { key = "k",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Up" } },
+    { key = "l",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Right" } },
+    { key = "H",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Left", 5 } } },
+    { key = "J",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Down", 5 } } },
+    { key = "K",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Up", 5 } } },
+    { key = "L",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Right", 5 } } },
+    { key = "1",     mods = "LEADER",       action = wez.action { ActivateTab = 0 } },
+    { key = "2",     mods = "LEADER",       action = wez.action { ActivateTab = 1 } },
+    { key = "3",     mods = "LEADER",       action = wez.action { ActivateTab = 2 } },
+    { key = "4",     mods = "LEADER",       action = wez.action { ActivateTab = 3 } },
+    { key = "5",     mods = "LEADER",       action = wez.action { ActivateTab = 4 } },
+    { key = "6",     mods = "LEADER",       action = wez.action { ActivateTab = 5 } },
+    { key = "7",     mods = "LEADER",       action = wez.action { ActivateTab = 6 } },
+    { key = "8",     mods = "LEADER",       action = wez.action { ActivateTab = 7 } },
+    { key = "9",     mods = "LEADER",       action = wez.action { ActivateTab = 8 } },
+    { key = "&",     mods = "LEADER|SHIFT", action = wez.action { CloseCurrentTab = { confirm = true } } },
+    { key = "x",     mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
+
+}
+-- Setup the leader key
+config.leader = { key = "a", mods = "CTRL" }
+-- Send CTRL-A to the terminal when CTRL-A when leader is pressed (e.g. CTRL-A CTRL-A)
+if config.leader.mods == "CTRL" then
+    table.insert(config.keys, 1, {
+        key = config.leader.key,
+        mods = "LEADER",
+        action = wez.action.SendString("\x01")
+    })
+end
 -- OS specific configuration
 if wez.target_triple == "x86_64-pc-windows-msvc" then
-    config.default_prog = { "pwsh.exe", "-NoLogo" }
-    -- config.default_domain = 'WSL:Utils'
+    --config.default_prog = { "pwsh.exe", "-NoLogo" }
+    config.default_domain = "WSL:Utils"
 else
     config.default_prog = { "bash" }
 end

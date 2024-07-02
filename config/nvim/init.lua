@@ -25,9 +25,11 @@ opt.background = vim.env.THEME_COLOR or "dark"
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 -- (deprecated?) opt.termencoding = "utf-8"
+opt.breakindent = true
+
 
 opt.clipboard = "unnamedplus"
-opt.completeopt = "menu,menuone,noselect"
+opt.completeopt = "menuone,noselect" --"menu,menuone,noselect"
 opt.mouse = "a"
 
 opt.autowrite = true
@@ -65,6 +67,8 @@ opt.hidden = true
 
 opt.undofile = true
 opt.undolevels = 10000
+
+opt.updatetime = 200
 
 opt.secure = true
 opt.exrc = true
@@ -213,9 +217,47 @@ require("lazy").setup({
       }
     end
   },
+  {
+    "kkoomen/vim-doge",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>dg", "<Plug>(doge-generate)", desc = "Generate Documentation" },
+    },
+    init = function()
+      vim.g.doge_doc_standard_python = 'numpy'
+      vim.g.doge_enable_mappings = 0
+      vim.g.doge_python_settings = {
+        single_quotes = 0, omit_redundant_param_types = 1
+      }
+    end
+  },
+  -- Keybinding helpers
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {}
+  },
+  -- Lua LSP configs for nvim
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "wezterm-types",      mods = { "wezterm" } },
+      },
+    },
+  },
+  { "justinsgithub/wezterm-types", lazy = true },
+  { "Bilal2453/luvit-meta",        lazy = true },
   -- latex
   {
     "lervag/vimtex",
+    ft = "tex",
     init = function()
       vim.g.vimtex_options = "go here" -- ? from docs
       if vim.fn.executable "zathura" == 1 then
@@ -294,6 +336,7 @@ require("lazy").setup({
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
         }),
         sources = {
+          { name = "lazydev", group_index = 0 },
           { name = "nvim_lsp" },
           { name = "luasnip" },
         }
@@ -303,7 +346,7 @@ require("lazy").setup({
   -- treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false,
+    version = "*",
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })
     end,
@@ -323,6 +366,9 @@ require("lazy").setup({
         }
       })
     end
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects", version = "*", after = "nvim-treesitter"
   },
   -- debugger
   {
@@ -451,13 +497,15 @@ require("lazy").setup({
   },
   -- linting + formatting
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvimtools/none-ls-extras.nvim" },
     config = function()
       local null_ls = require("null-ls")
 
       null_ls.setup({
         sources = {
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.completion.spell,
           null_ls.builtins.diagnostics.ruff,
           null_ls.builtins.formatting.black,
         }
@@ -497,7 +545,7 @@ require("lazy").setup({
   -- hydra
   {
     "anuvyklack/hydra.nvim",
-    lazy = false,
+    event = "VeryLazy",
     version = "*",
   },
   -- auto pairing
@@ -511,6 +559,7 @@ require("lazy").setup({
   -- mini.surround
   {
     "echasnovski/mini.surround",
+    event = "VeryLazy",
     config = function(_, opts)
       require('mini.surround').setup(opts)
     end
@@ -562,7 +611,7 @@ require("lazy").setup({
   -- bufferline
   {
     "akinsho/bufferline.nvim",
-    version = "v3.*",
+    version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     event = "VeryLazy",
     keys = {
@@ -573,14 +622,14 @@ require("lazy").setup({
       options = {
         diagnostics = "nvim_lsp",
         numbers = "buffer_id",
-        always_show_bufferline = false
+        always_show_bufferline = true
       }
     }
   },
   -- show indent guides on blank lines
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
   -- tmux
-  {
+  --[[{
     "aserowy/tmux.nvim",
     config = function()
       require("tmux").setup {
@@ -594,7 +643,7 @@ require("lazy").setup({
         },
       }
     end,
-  },
+  },]]
 })
 
 -- set colour scheme
