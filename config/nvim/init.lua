@@ -1,12 +1,5 @@
 -- vim: ts=2 sts=2 sw=2 et
-
--- External tools required
--- Windows Terminal + pwsh
--- mingw64 toolchain: https://www.msys2.org/
--- ripgrep: https://github.com/BurntSushi/ripgrep
--- win32yank for clipboard integration
--- sharkdp/fd
-
+--
 local opt = vim.opt
 local env = vim.env
 local keymap = vim.keymap
@@ -661,6 +654,17 @@ require("lazy").setup({
       }
     end,
   },]]
+  -- Refactoring plugin (experimental)
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("refactoring").setup()
+    end,
+  },
 })
 
 -- set colour scheme
