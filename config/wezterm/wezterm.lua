@@ -111,45 +111,45 @@ config.mouse_bindings = {
     },
 }
 
-config.leader = { key = "a", mods = "CTRL" }
+config.leader = { key = "b", mods = "CTRL" }
 config.disable_default_key_bindings = true
 config.keys = {
-    -- Passthrough double LEADER (CTRL-A)
-    { key = "a",     mods = "LEADER|CTRL",  action = wez.action.SendString("\x01") },
+    -- Passthrough double LEADER (CTRL-B)
+    { key = config.leader.key, mods = "LEADER|CTRL",  action = wez.action.SendString("\x02") },
     -- Copy/Paste
-    { key = "c",     mods = "CTRL|SHIFT",   action = wez.action.CopyTo "Clipboard" },
-    { key = "v",     mods = "CTRL|SHIFT",   action = wez.action.PasteFrom "Clipboard" },
+    { key = "c",               mods = "CTRL|SHIFT",   action = wez.action.CopyTo "Clipboard" },
+    { key = "v",               mods = "CTRL|SHIFT",   action = wez.action.PasteFrom "Clipboard" },
     -- Show launcher
-    { key = "c",     mods = "LEADER|CTRL",  action = wez.action.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES", } },
+    { key = "c",               mods = "LEADER|CTRL",  action = wez.action.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES", } },
     -- Show tab switcher
-    { key = "Tab",   mods = "LEADER",       action = wez.action.ShowTabNavigator },
+    { key = "Tab",             mods = "LEADER",       action = wez.action.ShowTabNavigator },
     -- Show command palette
-    { key = "Space", mods = "LEADER",       action = wez.action.ActivateCommandPalette },
+    { key = "Space",           mods = "LEADER",       action = wez.action.ActivateCommandPalette },
     -- Tmux-like Keybindings
     -- https://gist.github.com/quangIO/556fa4abca46faf40092282d0c11a367
-    { key = "\"",    mods = "LEADER|SHIFT", action = wez.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
-    { key = "%",     mods = "LEADER|SHIFT", action = wez.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
-    { key = "z",     mods = "LEADER",       action = "TogglePaneZoomState" },
-    { key = "c",     mods = "LEADER",       action = wez.action { SpawnTab = "CurrentPaneDomain" } },
-    { key = "h",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Left" } },
-    { key = "j",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Down" } },
-    { key = "k",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Up" } },
-    { key = "l",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Right" } },
-    { key = "H",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Left", 5 } } },
-    { key = "J",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Down", 5 } } },
-    { key = "K",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Up", 5 } } },
-    { key = "L",     mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Right", 5 } } },
-    { key = "1",     mods = "LEADER",       action = wez.action { ActivateTab = 0 } },
-    { key = "2",     mods = "LEADER",       action = wez.action { ActivateTab = 1 } },
-    { key = "3",     mods = "LEADER",       action = wez.action { ActivateTab = 2 } },
-    { key = "4",     mods = "LEADER",       action = wez.action { ActivateTab = 3 } },
-    { key = "5",     mods = "LEADER",       action = wez.action { ActivateTab = 4 } },
-    { key = "6",     mods = "LEADER",       action = wez.action { ActivateTab = 5 } },
-    { key = "7",     mods = "LEADER",       action = wez.action { ActivateTab = 6 } },
-    { key = "8",     mods = "LEADER",       action = wez.action { ActivateTab = 7 } },
-    { key = "9",     mods = "LEADER",       action = wez.action { ActivateTab = 8 } },
-    { key = "&",     mods = "LEADER|SHIFT", action = wez.action { CloseCurrentTab = { confirm = true } } },
-    { key = "x",     mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
+    { key = "\"",              mods = "LEADER|SHIFT", action = wez.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
+    { key = "%",               mods = "LEADER|SHIFT", action = wez.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
+    { key = "z",               mods = "LEADER",       action = "TogglePaneZoomState" },
+    { key = "c",               mods = "LEADER",       action = wez.action { SpawnTab = "CurrentPaneDomain" } },
+    { key = "h",               mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Left" } },
+    { key = "j",               mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Down" } },
+    { key = "k",               mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Up" } },
+    { key = "l",               mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Right" } },
+    { key = "H",               mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Left", 5 } } },
+    { key = "J",               mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Down", 5 } } },
+    { key = "K",               mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Up", 5 } } },
+    { key = "L",               mods = "LEADER|SHIFT", action = wez.action { AdjustPaneSize = { "Right", 5 } } },
+    { key = "1",               mods = "LEADER",       action = wez.action { ActivateTab = 0 } },
+    { key = "2",               mods = "LEADER",       action = wez.action { ActivateTab = 1 } },
+    { key = "3",               mods = "LEADER",       action = wez.action { ActivateTab = 2 } },
+    { key = "4",               mods = "LEADER",       action = wez.action { ActivateTab = 3 } },
+    { key = "5",               mods = "LEADER",       action = wez.action { ActivateTab = 4 } },
+    { key = "6",               mods = "LEADER",       action = wez.action { ActivateTab = 5 } },
+    { key = "7",               mods = "LEADER",       action = wez.action { ActivateTab = 6 } },
+    { key = "8",               mods = "LEADER",       action = wez.action { ActivateTab = 7 } },
+    { key = "9",               mods = "LEADER",       action = wez.action { ActivateTab = 8 } },
+    { key = "&",               mods = "LEADER|SHIFT", action = wez.action { CloseCurrentTab = { confirm = true } } },
+    { key = "x",               mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
 
 }
 -- OS specific configuration
