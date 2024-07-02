@@ -154,8 +154,8 @@ config.keys = {
 }
 -- OS specific configuration
 if wez.target_triple == "x86_64-pc-windows-msvc" then
-    --config.default_prog = { "pwsh.exe", "-NoLogo" }
-    config.default_domain = "WSL:Utils"
+    config.default_prog = { "pwsh.exe", "-NoLogo" }
+    --config.default_domain = "WSL:Utils"
 else
     config.default_prog = { "bash" }
 end
