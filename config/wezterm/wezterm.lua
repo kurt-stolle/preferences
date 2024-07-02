@@ -1,4 +1,3 @@
--- Wez"s Terminal Emulator
 -- https://wezfurlong.org/wezterm/
 
 local wez = require "wezterm"
@@ -51,7 +50,6 @@ else
 end
 config.font = wez.font("JetBrainsMono Nerd Font", { weight = 500 })
 config.font_size = 10.0
-config.window_decorations = "NONE"
 config.default_cursor_style = "BlinkingBar"
 config.enable_kitty_graphics = true
 config.window_padding = {
@@ -60,7 +58,7 @@ config.window_padding = {
     top = 0,
     bottom = 0,
 }
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
@@ -84,13 +82,12 @@ for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU } do
     local gpu = find_gpu(spec)
     if gpu then
         config.webgpu_preferred_adapter = gpu
-        config.front_end = "WebGpu"
-        config.webgpu_power_preference = "HighPerformance"
         break
     end
 end
-
-config.max_fps = 60
+config.front_end = "WebGpu"
+config.webgpu_power_preference = "HighPerformance"
+config.max_fps = 120
 
 -- Bindings
 config.mouse_bindings = {
@@ -114,23 +111,26 @@ config.mouse_bindings = {
     },
 }
 
+config.leader = { key = "a", mods = "CTRL" }
 config.disable_default_key_bindings = true
 config.keys = {
+    -- Passthrough double LEADER (CTRL-A)
+    { key = "a",     mods = "LEADER|CTRL",  action = wez.action.SendString("\x01") },
     -- Copy/Paste
     { key = "c",     mods = "CTRL|SHIFT",   action = wez.action.CopyTo "Clipboard" },
     { key = "v",     mods = "CTRL|SHIFT",   action = wez.action.PasteFrom "Clipboard" },
     -- Show launcher
-    { key = "c",   mods = "LEADER|CTRL",  action = wez.action.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES", } },
+    { key = "c",     mods = "LEADER|CTRL",  action = wez.action.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES", } },
     -- Show tab switcher
     { key = "Tab",   mods = "LEADER",       action = wez.action.ShowTabNavigator },
     -- Show command palette
     { key = "Space", mods = "LEADER",       action = wez.action.ActivateCommandPalette },
     -- Tmux-like Keybindings
     -- https://gist.github.com/quangIO/556fa4abca46faf40092282d0c11a367
-    { key = "\"",    mods = "LEADER|SHIFT",       action = wez.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
-    { key = "%",    mods = "LEADER|SHIFT",       action = wez.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
+    { key = "\"",    mods = "LEADER|SHIFT", action = wez.action { SplitVertical = { domain = "CurrentPaneDomain" } } },
+    { key = "%",     mods = "LEADER|SHIFT", action = wez.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
     { key = "z",     mods = "LEADER",       action = "TogglePaneZoomState" },
-    --{ key = "c",     mods = "LEADER",       action = wez.action { SpawnTab = "CurrentPaneDomain" } },
+    { key = "c",     mods = "LEADER",       action = wez.action { SpawnTab = "CurrentPaneDomain" } },
     { key = "h",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Left" } },
     { key = "j",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Down" } },
     { key = "k",     mods = "LEADER",       action = wez.action { ActivatePaneDirection = "Up" } },
@@ -152,16 +152,6 @@ config.keys = {
     { key = "x",     mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
 
 }
--- Setup the leader key
-config.leader = { key = "a", mods = "CTRL" }
--- Send CTRL-A to the terminal when CTRL-A when leader is pressed (e.g. CTRL-A CTRL-A)
-if config.leader.mods == "CTRL" then
-    table.insert(config.keys, 1, {
-        key = config.leader.key,
-        mods = "LEADER",
-        action = wez.action.SendString("\x01")
-    })
-end
 -- OS specific configuration
 if wez.target_triple == "x86_64-pc-windows-msvc" then
     --config.default_prog = { "pwsh.exe", "-NoLogo" }
