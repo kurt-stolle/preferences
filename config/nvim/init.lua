@@ -181,7 +181,8 @@ require("lazy").setup({
       if not opts.ensure_installed then
         opts.ensure_installed = {}
       end
-      table.insert(opts.ensure_installed, "black")
+      --table.insert(opts.ensure_installed, "black")
+      --table.insert(opts.ensure_installed, "ruff")
     end,
   },
   -- language server protocol
@@ -201,7 +202,7 @@ require("lazy").setup({
 
       local mason_lspconfig = require 'mason-lspconfig'
       mason_lspconfig.setup {
-        ensure_installed = { "pyright", "ruff", "lua_ls", "bashls" },
+        ensure_installed = { "pyright", "lua_ls", "bashls" },
         automatic_installation = true,
       }
 
@@ -214,7 +215,16 @@ require("lazy").setup({
       }
       lspconfig.pyright.setup {
         capabilities = capabilities,
-        disableOrganizeImports = true,
+        settings = {
+          -- Using Ruff instead
+          disableOrganizeImports = true,
+        },
+        python = {
+          -- Using Ruff instead
+          analysis = {
+            ignore = { '*' },
+          },
+        },
       }
       lspconfig.ruff.setup {
         -- https://github.com/astral-sh/ruff/blob/main/crates/ruff_server/docs/setup/NEOVIM.md
@@ -513,8 +523,8 @@ require("lazy").setup({
           null_ls.builtins.completion.spell,
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.pylint,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.black,
+          --null_ls.builtins.formatting.isort,
+          --null_ls.builtins.formatting.black,
         }
       })
     end
