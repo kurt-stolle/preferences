@@ -197,7 +197,7 @@ require("lazy").setup({
 
       local mason_lspconfig = require 'mason-lspconfig'
       mason_lspconfig.setup {
-        ensure_installed = { "pyright", "lua_ls" },
+        ensure_installed = { "pyright", "lua_ls", "bashls" },
         automatic_installation = true,
       }
 
@@ -206,6 +206,9 @@ require("lazy").setup({
         capabilities = capabilities,
       }
       lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+      }
+      lspconfig.bashls.setup {
         capabilities = capabilities,
       }
     end

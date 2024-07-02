@@ -50,6 +50,7 @@ else
     }
 end
 config.font = wez.font('JetBrainsMono Nerd Font', { weight = 500 })
+config.font_size = 10.0
 config.default_cursor_style = 'BlinkingBar'
 config.enable_kitty_graphics = true
 config.window_padding = {
@@ -83,7 +84,7 @@ for _, spec in ipairs {{backend="Vulkan", device_type="IntegratedGpu"}, {backend
 	end
 end
 
-config.max_fps = 120
+config.max_fps = 60
 config.front_end = 'WebGpu'
 config.webgpu_power_preference = "HighPerformance"
 

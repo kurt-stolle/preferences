@@ -4,8 +4,7 @@ if ! [ -d "$HOME/.cargo" ]; then
 fi
 
 # Check whether cargo is in the PATH
-if ! [[ "$PATH" =~ "$HOME/.cargo/bin" ]]
-then
+if ! [[ "$PATH" =~ "$HOME/.cargo/bin" ]]; then
     PATH="$HOME/.cargo/bin:$PATH"
 fi
 export PATH
@@ -14,3 +13,4 @@ export PATH
 if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
 fi
+
