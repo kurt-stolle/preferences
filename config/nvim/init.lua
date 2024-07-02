@@ -201,18 +201,23 @@ require("lazy").setup({
 
       local mason_lspconfig = require 'mason-lspconfig'
       mason_lspconfig.setup {
-        ensure_installed = { "pyright", "lua_ls", "bashls" },
+        ensure_installed = { "pyright", "ruff", "lua_ls", "bashls" },
         automatic_installation = true,
       }
 
       local lspconfig = require("lspconfig")
-      lspconfig.pyright.setup {
-        capabilities = capabilities,
-      }
       lspconfig.lua_ls.setup {
         capabilities = capabilities,
       }
       lspconfig.bashls.setup {
+        capabilities = capabilities,
+      }
+      lspconfig.pyright.setup {
+        capabilities = capabilities,
+        disableOrganizeImports = true,
+      }
+      lspconfig.ruff.setup {
+        -- https://github.com/astral-sh/ruff/blob/main/crates/ruff_server/docs/setup/NEOVIM.md
         capabilities = capabilities,
       }
     end
@@ -242,7 +247,7 @@ require("lazy").setup({
     opts = {}
   },
   -- Lua LSP configs for nvim
-  {
+  --[[{
     "folke/lazydev.nvim",
     ft = "lua",
     opts = {
@@ -254,6 +259,7 @@ require("lazy").setup({
   },
   { "justinsgithub/wezterm-types", lazy = true },
   { "Bilal2453/luvit-meta",        lazy = true },
+  --]]
   -- latex
   {
     "lervag/vimtex",
@@ -504,9 +510,10 @@ require("lazy").setup({
 
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.stylua,
           null_ls.builtins.completion.spell,
-          null_ls.builtins.diagnostics.ruff,
+          null_ls.builtins.diagnostics.mypy,
+          null_ls.builtins.diagnostics.pylint,
+          null_ls.builtins.formatting.isort,
           null_ls.builtins.formatting.black,
         }
       })
