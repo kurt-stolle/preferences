@@ -52,20 +52,45 @@ else
 	echo "> Configuration link exists"
 fi
 
-# Python
+# Python virtualenv
 echo 'Installing Python packages...'
 
 mkdir -p "$HOME/.venvs"
-VENV_PATH="$HOME/.venvs/neovim"
+VENV_PATH="$HOME/.venvs/nvim"
 if [ ! -d "$VENV_PATH" ]; then
     echo "> Creating virtual environment"
-    python3 -m venv --prompt neovim --symlinks --upgrade "$VENV_PATH"
+    python3 -m venv --prompt NeoVIm --symlinks --upgrade "$VENV_PATH"
 else
     echo "> Virtual environment exists"
 fi
 
 PYTHON="$VENV_PATH/bin/python"
-$PYTHON -m pip install -r "$HOME/preferences/config/nvim/requirements.txt"
+$PYTHON -m pip install --upgrade pip
+$PYTHON -m pip install --upgrade -r "$HOME/preferences/config/nvim/requirements.txt"
+
+# Node environment
+# We use NVM to install Node, and then create an alias 'nvim' for the node version.
+echo 'Checking Node environment...'
+
+if [ ! `which nvm` ]; then
+    if [ ! -d "$HOME/.nvm" ]; then
+        NVM_INSTALL="wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash"
+        echo "> Installing NVM"
+        curl -o- "$NVM_INSTALL" | bash
+    fi
+    echo "> Activating NVM"
+    source "$HOME/.nvm/nvm.sh"
+else
+    echo "> NVM exists is activate"
+fi
+
+nvm install node
+nvm alias nvim node
+nvm use nvim
+npm install -g neovim
+
+ln -s "`which node`" "$HOME/.local/bin/nvim-node"
+ln -s "`which npm`" "$HOME/.local/bin/nvim-npm"
 
 # Lua environment
 echo 'Installing Lua environment...'
@@ -81,6 +106,7 @@ else
     echo "> Lua environment exists"
 fi
 
-#$LUAROCKS install lazy
+source "$HEREROCKS_PATH/bin/activate"
+luarocks install magick
 
 echo 'Done!'

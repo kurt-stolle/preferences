@@ -19,8 +19,9 @@ opt.fileencoding = "utf-8"
 -- (deprecated?) opt.termencoding = "utf-8"
 opt.breakindent = true
 
--- venv
+-- providers
 vim.g.python3_host_prog = "~/.venvs/neovim/bin/python3"
+vim.g.node_host_prog = '~/.local/bin/nvim-node'
 
 -- clipboard
 -- this is handled by a plugin instead
@@ -554,7 +555,9 @@ require("lazy").setup({
       version = "*",
       opts = {
         size = 20,
+        persist_size = false, -- always open with the same size
         open_mapping = "<c-s>", -- s for shell
+        direction = "horizontal",
       }
     },
     -- status line
@@ -635,7 +638,6 @@ require("lazy").setup({
     -- images
     -- https://github.com/3rd/image.nvim
     -- https://github.com/jstkdng/ueberzugpp
-    --[[
     {
       "3rd/image.nvim",
       config = function()
@@ -650,7 +652,6 @@ require("lazy").setup({
         })
       end
     },
-    ]]
     -- notebook navigator
     {
       "GCBallesteros/NotebookNavigator.nvim",
