@@ -11,7 +11,7 @@
   "hydra.nvim": { "branch": "master", "commit": "3ced42c0b6a6c85583ff0f221635a7f4c1ab0dd0" },
   "image.nvim": { "branch": "master", "commit": "deb158dd3f49603233a602698b30371af2c3feb7" },
   "indent-blankline.nvim": { "branch": "master", "commit": "65e20ab94a26d0e14acac5049b8641336819dfc7" },
-  "lazy.nvim": { "branch": "main", "commit": "c771cf4928d1a1428ac7461658ab2916ed48adf5" },
+  "lazy.nvim": { "branch": "main", "commit": "436d09af7d3d9e1ff39dc2cf51be800a7ab45be9" },
   "lazydev.nvim": { "branch": "main", "commit": "cea5d0fb556cdc35122d9cae772e7e0ed65b4505" },
   "lualine.nvim": { "branch": "master", "commit": "e20896769ca3cd7e623f0d9f0f68c2155e1eeee2" },
   "luvit-meta": { "branch": "main", "commit": "ce76f6f6cdc9201523a5875a4471dcfe0186eb60" },

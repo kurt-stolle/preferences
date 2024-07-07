@@ -642,7 +642,7 @@ require("lazy").setup({
       "3rd/image.nvim",
       config = function()
         require("image").setup({
-          backend = "ueberzug",
+          backend = "kitty",
           max_width = 100,
           max_height = 12,
           max_height_window_percentage = math.huge,

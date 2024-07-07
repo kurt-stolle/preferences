@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+if [ ! -d "$HOME/.local/bin" ]; then
+    mkdir -p "$HOME/.local/bin"
+fi
+
 # Version check
 NVIM_VERSION_TARGET="v0.10.0"
 NVIM_URL="https://github.com/neovim/neovim/releases/download/$NVIM_VERSION_TARGET/nvim.appimage"
@@ -59,7 +63,7 @@ mkdir -p "$HOME/.venvs"
 VENV_PATH="$HOME/.venvs/nvim"
 if [ ! -d "$VENV_PATH" ]; then
     echo "> Creating virtual environment"
-    python3 -m venv --prompt NeoVIm --symlinks --upgrade "$VENV_PATH"
+    python3 -m venv --prompt nvim --symlinks "$VENV_PATH"
 else
     echo "> Virtual environment exists"
 fi
@@ -74,11 +78,15 @@ echo 'Checking Node environment...'
 
 if [ ! `which nvm` ]; then
     if [ ! -d "$HOME/.nvm" ]; then
-        NVM_INSTALL="wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh"
-        echo "> Installing NVM"
+        NVM_VERSION="0.39.7"
+        NVM_INSTALL="https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh"
         curl -o- "$NVM_INSTALL" | bash
     fi
     echo "> Activating NVM"
+    if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
+        echo "> NVM not found, see: https://github.com/nvm-sh/nvm"
+        exit 1
+    fi
     source "$HOME/.nvm/nvm.sh"
 else
     echo "> NVM exists is activate"
@@ -89,24 +97,32 @@ nvm alias nvim node
 nvm use nvim
 npm install -g neovim
 
-ln -s "`which node`" "$HOME/.local/bin/nvim-node"
-ln -s "`which npm`" "$HOME/.local/bin/nvim-npm"
+if [ ! -L "$HOME/.local/bin/nvim-node" ]; then
+    echo "> Creating symbolic link to node"
+    ln -s "$(which node)" "$HOME/.local/bin/nvim-node"
+fi
+if [ ! -L "$HOME/.local/bin/nvim-npm" ]; then
+    echo "> Creating symbolic link to npm"
+    ln -s "$(which npm)" "$HOME/.local/bin/nvim-npm"
+fi
 
 # Lua environment
 echo 'Installing Lua environment...'
 
 LAZYROCKS_PATH="$HOME/.local/share/nvim/lazy-rocks"
 HEREROCKS_PATH="$LAZYROCKS_PATH/hererocks"
+LUAROCKS="$HEREROCKS_PATH/bin/luarocks"
+LUA="$HEREROCKS_PATH/bin/luarocks"
 
 if [ ! -d "$HEREROCKS_PATH" ]; then
     echo "> Creating Lua environment"
     mkdir -p "$LAZYROCKS_PATH"
-    $PYTHON -m hererocks "$HEREROCKS_PATH" -r latest --lua=5.1 --patch
 else
-    echo "> Lua environment exists"
+    echo "> Lua environment exists, version $($LUA -v) (luarocks $($LUAROCKS --version))"
 fi
 
+$PYTHON -m hererocks "$HEREROCKS_PATH" -r latest --lua=5.1 --patch
 source "$HEREROCKS_PATH/bin/activate"
-luarocks install magick
+$LUAROCKS install magick
 
 echo 'Done!'
