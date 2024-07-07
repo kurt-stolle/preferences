@@ -74,7 +74,7 @@ echo 'Checking Node environment...'
 
 if [ ! `which nvm` ]; then
     if [ ! -d "$HOME/.nvm" ]; then
-        NVM_INSTALL="wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash"
+        NVM_INSTALL="wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh"
         echo "> Installing NVM"
         curl -o- "$NVM_INSTALL" | bash
     fi
