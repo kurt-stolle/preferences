@@ -1,20 +1,14 @@
 # shellcheck shell=bash
-
-# Taken from: https://raw.githubusercontent.com/wez/wezterm/main/assets/shell-integration/wezterm.sh
+# Based on the WezTerm shell integration script
+# https://raw.githubusercontent.com/wez/wezterm/main/assets/shell-integration/wezterm.sh
 # 
-# This file hooks up shell integration for wezterm.
-# It is suitable for zsh and bash.
-#
-# Although wezterm is mentioned here, the sequences used are not wezterm
-# specific and may provide the same functionality for other terminals.  Most
-# terminals are good at ignoring OSC sequences that they don't understand, but
+# Most terminals are good at ignoring OSC sequences that they don't understand, but
 # if not there are some bypasses:
 #
-# WEZTERM_SHELL_SKIP_ALL - disables all
-# WEZTERM_SHELL_SKIP_SEMANTIC_ZONES - disables zones
-# WEZTERM_SHELL_SKIP_CWD - disables OSC 7 cwd setting
-# WEZTERM_SHELL_SKIP_USER_VARS - disable user vars that capture information
-#                                about running programs
+# OSC_SHELL_SKIP_ALL - disables all
+# OSC_SHELL_SKIP_SEMANTIC_ZONES - disables zones
+# OSC_SHELL_SKIP_CWD - disables OSC 7 cwd setting
+# OSC_SHELL_SKIP_USER_VARS - disable user vars that capture information about running programs
 
 # shellcheck disable=SC2166
 if [ -z "${BASH_VERSION}" -a -z "${ZSH_NAME}" ] ; then
@@ -22,7 +16,7 @@ if [ -z "${BASH_VERSION}" -a -z "${ZSH_NAME}" ] ; then
   return 0
 fi
 
-if [ "${WEZTERM_SHELL_SKIP_ALL}" = "1" ] ; then
+if [ "${OSC_SHELL_SKIP_ALL}" = "1" ] ; then
   return 0
 fi
 
@@ -528,7 +522,7 @@ __wezterm_user_vars_preexec() {
 # Register the various functions; take care to perform osc7 after
 # the semantic zones as we don't want to perturb the last command
 # status before we've had a chance to report it to the terminal
-if [[ -z "${WEZTERM_SHELL_SKIP_SEMANTIC_ZONES}" ]]; then
+if [[ -z "${OSC_SHELL_SKIP_SEMANTIC_ZONES}" ]]; then
   if [[ -n "$BLE_VERSION" ]]; then
     blehook PRECMD+=__wezterm_semantic_precmd
     blehook PREEXEC+=__wezterm_semantic_preexec
@@ -538,7 +532,7 @@ if [[ -z "${WEZTERM_SHELL_SKIP_SEMANTIC_ZONES}" ]]; then
   fi
 fi
 
-if [[ -z "${WEZTERM_SHELL_SKIP_USER_VARS}" ]]; then
+if [[ -z "${OSC_SHELL_SKIP_USER_VARS}" ]]; then
   if [[ -n "$BLE_VERSION" ]]; then
     blehook PRECMD+=__wezterm_user_vars_precmd
     blehook PREEXEC+=__wezterm_user_vars_preexec
@@ -548,7 +542,7 @@ if [[ -z "${WEZTERM_SHELL_SKIP_USER_VARS}" ]]; then
   fi
 fi
 
-if [[ -z "${WEZTERM_SHELL_SKIP_CWD}" ]] ; then
+if [[ -z "${OSC_SHELL_SKIP_CWD}" ]] ; then
   if [[ -n "$BLE_VERSION" ]]; then
     blehook PRECMD+=__wezterm_osc7
   else

@@ -1,7 +1,13 @@
+if [[ $- != *i* ]] ; then
+  # Shell integration is only useful in interactive sessions
+  return 0
+fi
+
 # Check if starship is installed, if it is, use it, otherwise use the custom prompt
+export STARSHIP_CONFIG=~/preferences/config/starship.toml
 if command -v starship &> /dev/null; then
     eval "$(starship init bash)"
-    return
+    return 0
 fi
 
 # Starship not found, use custom prompt

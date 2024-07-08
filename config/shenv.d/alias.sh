@@ -10,6 +10,13 @@ alias apt-get='sudo apt-get'
 # Git
 alias gf='git submodule foreach'
 
+# Conda
+alias ce='conda env list'
+alias ca='conda activate'
+
+# RSync
+alias rsync='rsync --rsh=ssh --progress --partial --recursive' 
+
 # LS
 alias la='ls -Alh' # show hidden files
 alias ls='ls -aFh --color=always' # add colors and file type extensions
