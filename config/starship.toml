@@ -1,16 +1,16 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](#9A348E)\
+[](fg:login)\
 $os\
 $username\
 $hostname\
-[](fg:#9A348E bg:#DA627D)\
+[](fg:login bg:directory)\
 $directory\
-[](fg:#DA627D bg:#FCA17D)\
+[](fg:directory bg:git)\
 $git_branch\
 $git_status\
-[](fg:#FCA17D bg:#86BBD8)\
+[](fg:git bg:environment)\
 $c\
 $elixir\
 $elm\
@@ -24,25 +24,58 @@ $nodejs\
 $nim\
 $rust\
 $docker_context\
-[ ](fg:#86BBD8)\
+[ ](fg:environment)\
+$fill\
+$time
+$character
 """
+# We use the `fill` module instead
+right_format = ''
 
-right_format = """
-$time\
-"""
+# Timeouts
+scan_timeout = 50
+command_timeout = 1000
 
-add_newline = true
+# Adds a newline after each command
+add_newline = false
 
+# Colors
+palette = 'kurt'
+
+[palettes.kurt]
+login = "#9A348E"
+directory = "#DA627D"
+git = "#FCA17D"
+environment = "#86BBD8"
+
+# Prompt character
+[character]
+disabled = false
+format = '$symbol '
+success_symbol = '[](bold green)'
+error_symbol = '[](bold red)'
+vimcmd_symbol = '[](bold yellow)'
+vimcmd_replace_one_symbol = '[](bold yellow)'
+vimcmd_replace_symbol = '[](bold yellow)'
+vimcmd_visual_symbol = '[](bold yellow)'
+
+# Spacer
+[fill]
+disabled = false
+symbol = '·'
+style = 'bold black'
+
+# Login
 [username]
 show_always = true
-style_user = "bg:#9A348E"
-style_root = "bg:#9A348E"
+style_user = "bg:login"
+style_root = "bg:login"
 format = '[$user]($style)'
 disabled = false
 
 [hostname]
 disabled = false
-style = "bg:#9A348E"
+style = "bg:login"
 format = '[ @ $hostname ]($style)'
 ssh_only = false
 
@@ -51,17 +84,16 @@ ssh_only = false
 disabled = true
 
 [os]
-style = "bg:#9A348E"
+style = "bg:login"
 disabled = true
 
+# Location
 [directory]
-style = "bg:#DA627D"
+style = "bg:directory"
 format = "[ $path ]($style)"
 truncation_length = 6
 truncation_symbol = "…/"
 
-# Here is how you can shorten some long paths by text replacement
-# similar to mapped_locations in Oh My Posh:
 [directory.substitutions]
 "preferences" = " "
 "projects" = " "
@@ -72,88 +104,91 @@ truncation_symbol = "…/"
 "data" = "󰆼 "
 "datasets" = "󰆼 "
 
+# Time
+[time]
+disabled = false
+time_format = "%R %d-%m-%Y"
+use_12hr = false
+#style = 'bold white'
+format = '[$time]($style)'
+
+# Environments
+# Currently this is a bit verbose due to limitations of the configuration format
 [conda]
 disabled = false
 symbol = "󱔎 "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol$environment ]($style)'
 
 [c]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [docker_context]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol $context ]($style)'
 
 [elixir]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [elm]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [git_branch]
 symbol = ""
-style = "bg:#FCA17D"
+style = "bg:git"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:#FCA17D"
+style = "bg:git"
 format = '[$all_status$ahead_behind ]($style)'
 
 [golang]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [gradle]
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [haskell]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [java]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [julia]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [nim]
 symbol = "󰆥 "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [rust]
 symbol = ""
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
 
 [scala]
 symbol = " "
-style = "bg:#86BBD8"
+style = "bg:environment"
 format = '[ $symbol ($version) ]($style)'
-
-[time]
-disabled = false
-time_format = "%R" # Hour:Minute Format
-format = '[$time]($style)'
-
-
