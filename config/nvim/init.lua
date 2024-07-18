@@ -139,7 +139,7 @@ require("lazy").setup({
         require("catppuccin").setup({
           color_overrides = {
             mocha = {
-              base = "#000000"
+              --base = "#000000"
             }
           },
           integrations = {
