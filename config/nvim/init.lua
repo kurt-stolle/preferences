@@ -248,6 +248,12 @@ require("lazy").setup({
         lspconfig.ruff.setup {
           -- https://github.com/astral-sh/ruff/blob/main/crates/ruff_server/docs/setup/NEOVIM.md
           capabilities = capabilities,
+          on_attach = function(client, bufnr)
+            if client.name == "ruff" then
+              -- Disable hover in favor of pyright
+              client.server_capabilities.hoverProvider = false
+            end
+          end
         }
       end
     },
@@ -555,7 +561,7 @@ require("lazy").setup({
       version = "*",
       opts = {
         size = 20,
-        persist_size = false, -- always open with the same size
+        persist_size = false,   -- always open with the same size
         open_mapping = "<c-s>", -- s for shell
         direction = "horizontal",
       }
