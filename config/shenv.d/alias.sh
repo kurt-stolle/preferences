@@ -1,18 +1,27 @@
 # VIM to NeoVIM
-alias vi='nvim'
-alias vim='nvim'
+if command -v nvim &> /dev/null; then
+    alias vi='nvim'
+    alias vim='nvim'
+fi
 
 # DNF and APT
-alias dnf='sudo dnf'
-alias apt='sudo apt'
-alias apt-get='sudo apt-get'
+if command -v dnf &> /dev/null; then
+    alias dnf='sudo dnf'
+fi
+
+if command -v apt &> /dev/null; then
+    alias apt='sudo apt'
+    alias apt-get='sudo apt-get'
+fi
 
 # Git
-alias gf='git submodule foreach'
+alias git-each='git submodule foreach'
 
 # Conda
-alias ce='conda env list'
-alias ca='conda activate'
+if command -v conda &> /dev/null; then
+    alias ce='conda env list'
+    alias ca='conda activate'
+fi
 
 # RSync
 alias rsync='rsync --rsh=ssh --progress --partial --recursive' 
