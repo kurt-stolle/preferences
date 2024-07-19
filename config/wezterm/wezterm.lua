@@ -31,7 +31,7 @@ if get_appearance():lower():find "light" then
    -- }
 else
     local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
-    --theme.background = "#000000"
+    theme.background = "#000000"
     --custom.tab_bar.background = "#040404"
     --custom.tab_bar.inactive_tab.bg_color = "#0f0f0f"
     --custom.tab_bar.new_tab.bg_color = "#080808"

@@ -139,7 +139,7 @@ require("lazy").setup({
         require("catppuccin").setup({
           color_overrides = {
             mocha = {
-              --base = "#000000"
+              base = "#000000"
             }
           },
           integrations = {
@@ -646,6 +646,9 @@ require("lazy").setup({
     -- https://github.com/jstkdng/ueberzugpp
     {
       "3rd/image.nvim",
+      cond = function()
+        return vim.fn.executable "magick" == 1
+      end,
       config = function()
         require("image").setup({
           backend = "kitty",
