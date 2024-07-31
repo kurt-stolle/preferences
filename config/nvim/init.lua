@@ -20,7 +20,7 @@ opt.fileencoding = "utf-8"
 opt.breakindent = true
 
 -- providers
-vim.g.python3_host_prog = vim.loop.os_homedir() .. "/.venvs/neovim/bin/python3"
+vim.g.python3_host_prog = vim.loop.os_homedir() .. "/.venvs/nvim/bin/python3"
 vim.g.node_host_prog = vim.loop.os_homedir() .. '/.local/bin/nvim-node'
 
 -- clipboard
