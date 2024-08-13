@@ -15,7 +15,7 @@ themes {
         white "#4c4f69"
     }
     kurt-dark {
-        bg "#181825"
+        bg "#1e1e1e"
         fg "#cdd6f4"
         red "#f38ba8"
         green "#a6e3a1"

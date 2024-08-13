@@ -24,14 +24,14 @@ if get_appearance():lower():find "light" then
     --config.win32_system_backdrop = "Mica"
     config.color_scheme = "Catppuccin Latte" -- "iTerm2 Tango Light"
     config.window_background_opacity = 1.0
-   -- config.foreground_text_hsb = {
-   --     hue = 1.0,
-   --     saturation = 1.2,
-   --     brightness = 0.8,
-   -- }
+    -- config.foreground_text_hsb = {
+    --     hue = 1.0,
+    --     saturation = 1.2,
+    --     brightness = 0.8,
+    -- }
 else
     local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
-    theme.background = "#000000"
+    --theme.background = "#000000"
     --custom.tab_bar.background = "#040404"
     --custom.tab_bar.inactive_tab.bg_color = "#0f0f0f"
     --custom.tab_bar.new_tab.bg_color = "#080808"
@@ -41,12 +41,12 @@ else
         ["Catppuccin Mocha Dark"] = theme
     }
     config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
-    config.window_background_opacity = 1.0        --0.2
-   -- config.foreground_text_hsb = {
-   --     hue = 1.0,
-   --     saturation = 1.2,
-   --     brightness = 1.5,
-   -- }
+    config.window_background_opacity = 0.9        --0.2
+    -- config.foreground_text_hsb = {
+    --     hue = 1.0,
+    --     saturation = 1.2,
+    --     brightness = 1.5,
+    -- }
 end
 config.font = wez.font("JetBrainsMono Nerd Font", { weight = 500 })
 config.font_size = 10.0
