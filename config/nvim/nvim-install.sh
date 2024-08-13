@@ -83,7 +83,7 @@ function install_nvim_venv {
     $PYTHON_NVIM -m pip install --upgrade setuptools wheel
 
     echo '> Installing Python packages'
-    $PYTHON_NVIM -m pip install --upgrade pynvim jupyter_client cairosvg pnglatex matplotlib plotly kaleido pyperclip
+    $PYTHON_NVIM -m pip install --upgrade pynvim jupyter_client cairosvg pnglatex matplotlib plotly kaleido pyperclip nbformat
 
     echo '> Installing Hererocks'
     $PYTHON_NVIM -m pip install --upgrade hererocks

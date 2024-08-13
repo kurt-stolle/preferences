@@ -4,6 +4,9 @@ local opt = vim.opt
 local env = vim.env
 local keymap = vim.keymap
 
+-- cached plugin loader
+vim.loader.enable()
+
 -- lazy initialization
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -128,7 +131,7 @@ require("lazy").setup({
   spec = {
     -- clipboard (OSC52 support)
     -- https://github.com/ibhagwan/smartyank.nvim?tab=readme-ov-file#what-is-smartyank
-    { 'ibhagwan/smartyank.nvim',    lazy = false },
+    --{ 'ibhagwan/smartyank.nvim',    lazy = false },
     -- themes
     {
       "catppuccin/nvim",
@@ -156,7 +159,7 @@ require("lazy").setup({
     -- devicons
     { "nvim-tree/nvim-web-devicons" },
     -- Nvim tree
-    {
+    --[[{
       "nvim-tree/nvim-tree.lua",
       lazy = false,
       version = "*",
@@ -168,6 +171,28 @@ require("lazy").setup({
         { "<leader>nt", "<cmd>NvimTreeToggle<CR>",   desc = "Toggle Nvim Tree" },
         { "<leader>nr", "<cmd>NvimTreeRefresh<CR>",  desc = "Refresh Nvim Tree" },
         { "<leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "Find File in Nvim Tree" },
+      },
+    },]]
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v3.x",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons",
+        "MunifTanjim/nui.nvim",
+      },
+      config = function()
+        require("neo-tree").setup({
+          close_if_last_window = false,
+          popup_border_style = "rounded",
+          enable_git_status = true,
+          enable_diagnostics = true,
+        })
+      end,
+      keys = {
+        { "nt", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
+        { "nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
+        { "nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
       },
     },
     -- cheatsheet
@@ -644,7 +669,7 @@ require("lazy").setup({
     -- images
     -- https://github.com/3rd/image.nvim
     -- https://github.com/jstkdng/ueberzugpp
-    {
+    --[[{
       "3rd/image.nvim",
       cond = function()
         return vim.fn.executable "magick" == 1
@@ -660,9 +685,9 @@ require("lazy").setup({
           window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
         })
       end
-    },
+    },]]
     -- notebook navigator
-    {
+    --[[{
       "GCBallesteros/NotebookNavigator.nvim",
       keys = {
         { "]h",        function() require("notebook-navigator").move_cell "d" end },
@@ -691,10 +716,10 @@ require("lazy").setup({
           },
         })
       end,
-    },
+    },]]
     -- molten (interactive repl)
     -- https://github.com/benlubas/molten-nvim/blob/main/docs/Probably-Too-Quick-Start-Guide.md
-    {
+    --[[{
       "benlubas/molten-nvim",
       dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
       version = "*", -- use version <2.0.0 to avoid breaking changes
@@ -711,7 +736,7 @@ require("lazy").setup({
         { "<localleader>mo",  "<cmd>MoltenEnterOutput<CR>",           desc = "enter output window" },
         { "<localleader>mh",  "<cmd>MoltenHideOutput<CR>",            desc = "hide output window" },
       }
-    },
+    },]]
     -- bufferline
     {
       "akinsho/bufferline.nvim",
@@ -748,6 +773,13 @@ require("lazy").setup({
       }
     end,
   },]]
+    {
+      "mbbill/undotree",
+      keys = {
+        { "<leader>tt", function() vim.cmd.UndotreeToggle() end, desc = "Toggle Undotree" },
+        { "<leader>tf", function() vim.cmd.UndotreeFocus() end,  desc = "Focus Undotree" },
+      },
+    },
     -- Refactoring plugin (experimental)
     {
       "ThePrimeagen/refactoring.nvim",
