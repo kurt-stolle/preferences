@@ -125,7 +125,6 @@ keymap.set('t', '<C-w>', "<C-\\><C-n><C-w>")
 -- https://www.lazyvim.org/
 require("lazy").setup({
   rocks = {
-    enabled = true,
     hererocks = true,
   },
   spec = {
@@ -142,17 +141,16 @@ require("lazy").setup({
         require("catppuccin").setup({
           color_overrides = {
             mocha = {
-              base = "#000000"
+              --base = "#000000"
             }
           },
           integrations = {
             mason = true,
-
           },
         })
       end
     },
-    { "arzg/vim-colors-xcode",      lazy = true, priority = 1000, name = "xcode" },
+    -- { "arzg/vim-colors-xcode",      lazy = true, priority = 1000, name = "xcode" },
     -- nvim nio (async io package)
     -- https://github.com/nvim-neotest/nvim-nio
     { "nvim-neotest/nvim-nio" },
@@ -186,7 +184,16 @@ require("lazy").setup({
           close_if_last_window = false,
           popup_border_style = "rounded",
           enable_git_status = true,
-          enable_diagnostics = true,
+          enable_diagnostics = false,
+        })
+      end,
+      init = function()
+        vim.api.nvim_create_autocmd("VimEnter", {
+          callback = function()
+            if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+              require("neo-tree.command").execute({ toggle = true })
+            end
+          end
         })
       end,
       keys = {
@@ -235,7 +242,6 @@ require("lazy").setup({
       dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        --"nvimtools/none-ls.nvim",
       },
       config = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -669,8 +675,9 @@ require("lazy").setup({
     -- images
     -- https://github.com/3rd/image.nvim
     -- https://github.com/jstkdng/ueberzugpp
-    --[[{
+    {
       "3rd/image.nvim",
+      dependencies = { "nvim-lua/plenary.nvim", "leafo/magick" },
       cond = function()
         return vim.fn.executable "magick" == 1
       end,
@@ -685,7 +692,7 @@ require("lazy").setup({
           window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
         })
       end
-    },]]
+    },
     -- notebook navigator
     --[[{
       "GCBallesteros/NotebookNavigator.nvim",
