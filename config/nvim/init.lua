@@ -81,7 +81,7 @@ opt.hidden = true
 opt.undofile = true
 opt.undolevels = 10000
 
-opt.updatetime = 50--200
+opt.updatetime = 100--200
 
 opt.secure = true
 opt.exrc = true
