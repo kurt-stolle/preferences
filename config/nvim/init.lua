@@ -45,7 +45,6 @@ vim.g.node_host_prog = vim.loop.os_homedir() .. '/.local/bin/nvim-node'
 -- autocomplete action
 opt.completeopt = "menu,menuone,noselect"
 opt.mouse = "a"
-
 opt.autowrite = true
 opt.confirm = true
 opt.inccommand = "nosplit"
