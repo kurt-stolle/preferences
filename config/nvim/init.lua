@@ -17,9 +17,9 @@ opt.rtp:prepend(env.LAZY or lazypath)
 
 -- common settings
 opt.background = vim.env.THEME_COLOR or "dark"
+opt.termguicolors = true
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
--- (deprecated?) opt.termencoding = "utf-8"
 opt.breakindent = true
 
 -- providers
@@ -76,7 +76,6 @@ opt.tabstop = 4
 
 opt.showmode = false
 opt.signcolumn = "yes"
-opt.termguicolors = true
 opt.hidden = true
 
 opt.undofile = true
@@ -87,7 +86,7 @@ opt.updatetime = 200
 opt.secure = true
 opt.exrc = true
 
--- disable netrw, we use `nvim-tree` instead
+-- disable netrw, we use `neo-tree` instead
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -148,29 +147,13 @@ require("lazy").setup({
             mason = true,
           },
         })
-      end
+      end,
+      init = function()
+        vim.cmd.colorscheme "catppuccin"
+      end,
     },
     -- { "arzg/vim-colors-xcode",      lazy = true, priority = 1000, name = "xcode" },
-    -- nvim nio (async io package)
-    -- https://github.com/nvim-neotest/nvim-nio
-    { "nvim-neotest/nvim-nio" },
-    -- devicons
-    { "nvim-tree/nvim-web-devicons" },
-    -- Nvim tree
-    --[[{
-      "nvim-tree/nvim-tree.lua",
-      lazy = false,
-      version = "*",
-      dependencies = "nvim-tree/nvim-web-devicons",
-      config = function()
-        require("nvim-tree").setup()
-      end,
-      keys = {
-        { "<leader>nt", "<cmd>NvimTreeToggle<CR>",   desc = "Toggle Nvim Tree" },
-        { "<leader>nr", "<cmd>NvimTreeRefresh<CR>",  desc = "Refresh Nvim Tree" },
-        { "<leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "Find File in Nvim Tree" },
-      },
-    },]]
+    -- nvim-tree
     {
       "nvim-neo-tree/neo-tree.nvim",
       branch = "v3.x",
@@ -201,14 +184,6 @@ require("lazy").setup({
         { "nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
         { "nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
       },
-    },
-    -- cheatsheet
-    {
-      "sudormrfbin/cheatsheet.nvim",
-      event = "BufWinEnter",
-      config = function()
-        require("cheatsheet").setup()
-      end
     },
     -- Copilot
     {
@@ -425,6 +400,8 @@ require("lazy").setup({
         require("nvim-treesitter.configs").setup({
           ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "javascript" },
           auto_install = true,
+          sync_install = false,
+          ignore_install = {},
           highlight = { enable = true, additional_vim_regex_highlighting = true },
           incremental_selection = {
             enable = true,
@@ -471,7 +448,6 @@ require("lazy").setup({
             end
           end,
         },
-
         -- virtual text for the debugger
         {
           "theHamsta/nvim-dap-virtual-text",
@@ -794,15 +770,10 @@ require("lazy").setup({
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
       },
-      config = function()
-        require("refactoring").setup()
-      end,
     },
   },
 })
 
--- set colour scheme
-vim.cmd.colorscheme "catppuccin"
 
 -- up / down with line wrap
 keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -819,7 +790,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- lsp keybindings
---
 --"leader
 keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
 keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })

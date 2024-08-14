@@ -171,6 +171,7 @@ keybinds clear-defaults=true {
     }
     shared_except "normal" "locked" {
         bind "Enter" { SwitchToMode "Normal"; }
+        bind "Esc" { SwitchToMode "Normal"; }
     }
     shared_except "tmux" "locked" {
         bind "Ctrl a" { SwitchToMode "Tmux"; }
@@ -221,6 +222,7 @@ simplified_ui false
 //   - false
 //
 // pane_frames true
+pane_frames false
 
 // Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
 // Options:
@@ -234,7 +236,7 @@ simplified_ui false
 //   - true (default)
 //   - false
 //
-// session_serialization false
+session_serialization false
 
 // Whether pane viewports are serialized along with the session, default is false
 // Options:
@@ -270,7 +272,7 @@ default_layout "kurt"
 //   - true (default)
 //   - false
 //
-mouse_mode true
+mouse_mode false
 
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
@@ -297,7 +299,7 @@ mouse_mode true
 //   - system (default)
 //   - primary
 //
-copy_clipboard "primary"
+// copy_clipboard "primary"
 
 // Enable or disable automatic copy (and clear) of selection when releasing mouse
 // Default: true
