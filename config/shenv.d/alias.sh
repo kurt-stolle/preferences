@@ -14,6 +14,12 @@ if command -v apt &> /dev/null; then
     alias apt-get='sudo apt-get'
 fi
 
+# Zellij
+if command -v zellij &> /dev/null; then
+    alias zj='zellij'
+    alias zja='zellij attach'
+fi
+
 # Git
 alias git-each='git submodule foreach'
 
