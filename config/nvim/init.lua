@@ -1,4 +1,4 @@
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=2 sts=2 sw=2
 --
 local opt = vim.opt
 local env = vim.env
@@ -6,6 +6,7 @@ local keymap = vim.keymap
 
 -- utilities
 local is_windows = vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1
+local home = vim.loop.os_homedir()
 
 -- cached plugin loader
 vim.loader.enable()
@@ -26,8 +27,8 @@ opt.fileencoding = "utf-8"
 opt.breakindent = true
 
 -- providers
-vim.g.python3_host_prog = vim.loop.os_homedir() .. "/.venvs/nvim/bin/python3"
-vim.g.node_host_prog = vim.loop.os_homedir() .. '/.local/bin/nvim-node'
+vim.g.python3_host_prog = home .. "/.venvs/nvim/bin/python3"
+vim.g.node_host_prog = home .. '/.local/bin/nvim-node'
 
 -- clipboard
 -- this is handled by a plugin instead
@@ -348,28 +349,16 @@ require("lazy").setup({
             documentation = cmp.config.window.bordered(),
           },
           mapping = cmp.mapping.preset.insert({
-            --[[[          ["<c-cr>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<s-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          --]]
-            ["<C-space>"] = cmp.mapping(function(fallback)
+            ["<S-CR>"] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { "i", "s" }),
+            ["<C-CR>"] = cmp.mapping(function(fallback)
               if cmp.visible() then
                 cmp.select_next_item()
               elseif luasnip.expand_or_jumpable() then
@@ -380,7 +369,7 @@ require("lazy").setup({
                 fallback()
               end
             end, { "i", "s" }),
-            ["<C-e>"] = cmp.mapping.abort(),
+            ["<C-c>"] = cmp.mapping.abort(),
             ["<CR>"] = cmp.mapping.confirm({ select = true }),
           }),
           sources = {
@@ -543,7 +532,9 @@ require("lazy").setup({
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
-      cond = function() return is_windows; end,
+      cond = function()
+        return not is_windows
+      end,
       config = function()
         require('telescope').load_extension('fzf')
       end
@@ -639,7 +630,7 @@ require("lazy").setup({
       "3rd/image.nvim",
       dependencies = { "nvim-lua/plenary.nvim", "leafo/magick" },
       cond = function()
-        return vim.fn.executable "magick" == 1 and ~is_windows
+        return vim.fn.executable "magick" == 1 and not is_windows
       end,
       config = function()
         require("image").setup({
@@ -760,8 +751,12 @@ require("lazy").setup({
 
 
 -- up / down with line wrap
---keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
---keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- adjusting to normalcy with binding ctrl-c to esc to avoid having to swap esc
+-- and capslock on every system touched
+vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- highlight yanked text
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
