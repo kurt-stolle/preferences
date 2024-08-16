@@ -153,9 +153,12 @@ config.keys = {
 
 }
 -- OS specific configuration
-if wez.target_triple == "x86_64-pc-windows-msvc" then
+local is_windows = wez.target_triple == "x86_64-pc-windows-msvc"
+
+if is_windows then
     config.default_prog = { "pwsh.exe", "-NoLogo" }
     --config.default_domain = "WSL:Utils"
+    config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
 else
     config.default_prog = { "bash" }
 end

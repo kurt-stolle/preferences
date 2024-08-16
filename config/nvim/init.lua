@@ -4,6 +4,9 @@ local opt = vim.opt
 local env = vim.env
 local keymap = vim.keymap
 
+-- utilities
+local is_windows = vim.fn.has('win32') == 1 or vim.fn.has('win64') == 1
+
 -- cached plugin loader
 vim.loader.enable()
 
@@ -540,6 +543,7 @@ require("lazy").setup({
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
+      cond = function() return is_windows; end,
       config = function()
         require('telescope').load_extension('fzf')
       end
@@ -635,7 +639,7 @@ require("lazy").setup({
       "3rd/image.nvim",
       dependencies = { "nvim-lua/plenary.nvim", "leafo/magick" },
       cond = function()
-        return vim.fn.executable "magick" == 1
+        return vim.fn.executable "magick" == 1 and ~is_windows
       end,
       config = function()
         require("image").setup({
