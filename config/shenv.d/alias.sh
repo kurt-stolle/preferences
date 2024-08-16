@@ -1,9 +1,9 @@
 # DNF and APT
-if `command -v dnf` &> /dev/null; then
+if `command -v dnf &> /dev/null`; then
     alias dnf='sudo dnf'
 fi
 
-if `command -v apt` &> /dev/null; then
+if `command -v apt &> /dev/null`; then
     alias apt='sudo apt'
     alias apt-get='sudo apt-get'
 fi

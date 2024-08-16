@@ -5,7 +5,7 @@ fi
 
 # Check if starship is installed, if it is, use it, otherwise use the custom prompt
 export STARSHIP_CONFIG=~/preferences/config/starship.toml
-if `command -v starship` &> /dev/null; then
+if `command -v starship &> /dev/null`; then
     eval "$(starship init bash)"
     return 0
 fi
