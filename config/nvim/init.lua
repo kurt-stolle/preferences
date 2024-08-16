@@ -80,7 +80,7 @@ opt.hidden = true
 opt.undofile = true
 opt.undolevels = 10000
 
-opt.updatetime = 100--200
+opt.updatetime = 100 --200
 
 opt.secure = true
 opt.exrc = true
@@ -366,7 +366,7 @@ require("lazy").setup({
             end
           end, { "i", "s" }),
           --]]
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
+            ["<C-space>"] = cmp.mapping(function(fallback)
               if cmp.visible() then
                 cmp.select_next_item()
               elseif luasnip.expand_or_jumpable() then
@@ -377,7 +377,7 @@ require("lazy").setup({
                 fallback()
               end
             end, { "i", "s" }),
-            ["<c-e>"] = cmp.mapping.abort(),
+            ["<C-e>"] = cmp.mapping.abort(),
             ["<CR>"] = cmp.mapping.confirm({ select = true }),
           }),
           sources = {
@@ -522,6 +522,9 @@ require("lazy").setup({
         { "<leader>sg",      "<cmd>Telescope live_grep<cr>",                     desc = "Search Project" },
         { "<leader>ss",      "<cmd>Telescope lsp_document_symbols<cr>",          desc = "Search Document Symbols" },
         { "<leader>sw",      "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Search Workspace Symbols" },
+        { "<leader>sd",      "<cmd>Telescope diagnostics<cr>",                   desc = "Search Diagnostics" },
+        { "<leader>sr",      "<cmd>Telescope registers<cr>",                     desc = "Search Registers" },
+        { "<leader>sq",      "<cmd>Telescope quickfix<cr>",                      desc = "Search Quickfix" },
       },
       opts = {
         extensions = {
@@ -541,35 +544,16 @@ require("lazy").setup({
         require('telescope').load_extension('fzf')
       end
     },
-    -- linting + formatting
-    --[[
-  {
-    "nvimtools/none-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvimtools/none-ls-extras.nvim" },
-    config = function()
-      local null_ls = require("null-ls")
-
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.completion.spell,
-          null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.diagnostics.pylint,
-          --null_ls.builtins.formatting.isort,
-          --null_ls.builtins.formatting.black,
-        }
-      })
-    end
-  },]]
     -- terminal
     {
       "akinsho/toggleterm.nvim",
       event = "VeryLazy",
       version = "*",
       opts = {
-        size = 20,
-        persist_size = false,   -- always open with the same size
-        open_mapping = "<c-s>", -- s for shell
-        direction = "horizontal",
+        --size = 20,
+        --persist_size = false,   -- always open with the same size
+        open_mapping = "<C-s>", -- s for shell
+        direction = "float",
       }
     },
     -- status line
@@ -613,9 +597,6 @@ require("lazy").setup({
     {
       "echasnovski/mini.surround",
       event = "VeryLazy",
-      config = function(_, opts)
-        require('mini.surround').setup(opts)
-      end
     },
     -- mini.ai
     {
@@ -683,7 +664,7 @@ require("lazy").setup({
         "echasnovski/mini.hipatterns",
         -- "hkupty/iron.nvim", -- repl provider
         -- "akinsho/toggleterm.nvim", -- alternative repl provider
-        "benlubas/molten-nvim", -- alternative repl provider
+        "benlubas/molten-nvim", -- alnernative repl provider
         "anuvyklack/hydra.nvim",
       },
       event = "VeryLazy",
@@ -701,7 +682,7 @@ require("lazy").setup({
     },]]
     -- molten (interactive repl)
     -- https://github.com/benlubas/molten-nvim/blob/main/docs/Probably-Too-Quick-Start-Guide.md
-    --[[{
+    {
       "benlubas/molten-nvim",
       dependencies = { "nvim-lua/plenary.nvim", "3rd/image.nvim" },
       version = "*", -- use version <2.0.0 to avoid breaking changes
@@ -718,8 +699,8 @@ require("lazy").setup({
         { "<localleader>mo",  "<cmd>MoltenEnterOutput<CR>",           desc = "enter output window" },
         { "<localleader>mh",  "<cmd>MoltenHideOutput<CR>",            desc = "hide output window" },
       }
-    },]]
-    -- bufferline
+    },
+    --[[ bufferline
     {
       "akinsho/bufferline.nvim",
       version = "*",
@@ -736,7 +717,7 @@ require("lazy").setup({
           always_show_bufferline = true
         }
       }
-    },
+    },]]
     -- show indent guides on blank lines
     { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     -- tmux
@@ -775,8 +756,8 @@ require("lazy").setup({
 
 
 -- up / down with line wrap
-keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+--keymap.set('n', '<Up>', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+--keymap.set('n', '<Down>', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- highlight yanked text
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -791,7 +772,34 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- lsp keybindings
 --"leader
 keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { desc = 'Rename Symbol' })
+keymap.set('n', '<leader>rr', vim.lsp.buf.references, { desc = 'Rename Symbol' })
 keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Goto Definition' })
 keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code Action' })
-keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
+keymap.set({ 'n', 'i' }, '<C-Q>', vim.lsp.buf.signature_help, { desc = 'Signature Help' })
+keymap.set({ 'n', 'i' }, '<C-P>', vim.lsp.buf.hover, { desc = 'Hover Documentation' })
 keymap.set('n', '<leader>ff', vim.lsp.buf.format, { desc = 'Format Code' })
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client == nil then
+      return
+    end
+    if client.supports_method('textDocument/implementation') then
+      -- Create a keymap for vim.lsp.buf.implementation
+    end
+    if client.supports_method('textDocument/completion') and vim.lsp.completion then
+      -- Enable auto-completion
+      vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    end
+    if client.supports_method('textDocument/formatting') then
+      -- Format the current buffer on save
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+        end,
+      })
+    end
+  end,
+})

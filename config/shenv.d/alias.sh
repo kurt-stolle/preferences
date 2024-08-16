@@ -1,33 +1,29 @@
-# VIM to NeoVIM
-if command -v nvim &> /dev/null; then
-    alias vi='nvim'
-    alias vim='nvim'
-fi
-
 # DNF and APT
-if command -v dnf &> /dev/null; then
+if `command -v dnf` &> /dev/null; then
     alias dnf='sudo dnf'
 fi
 
-if command -v apt &> /dev/null; then
+if `command -v apt` &> /dev/null; then
     alias apt='sudo apt'
     alias apt-get='sudo apt-get'
 fi
 
+# Python
+alias py='python'
+alias pym='python -module'
+alias pdb='python -m pdb -c continue'
+alias pip='python -m pip'
+
 # Zellij
-if command -v zellij &> /dev/null; then
-    alias zj='zellij'
-    alias zja='zellij attach'
-fi
+alias zj='zellij'
+alias zja='zellij attach'
+
+# VIM to NeoVIM
+alias vi='nvim'
+alias vim='nvim'
 
 # Git
 alias git-each='git submodule foreach'
-
-# Conda
-if command -v conda &> /dev/null; then
-    alias ce='conda env list'
-    alias ca='conda activate'
-fi
 
 # RSync
 alias rsync='rsync --rsh=ssh --progress --partial --recursive' 
@@ -50,7 +46,7 @@ alias ll='ls -a -l' # long listing format
 #alias cp='cp -i'
 #alias mv='mv -i'
 # alias rm='rm -iv'
-alias mkdir='mkdir -p'
+alias mkdirs='mkdir -p'
 
 # Count all files (recursively) in the current folder
 alias countfiles="for t in files links directories; do echo \`find . -type \${t:0:1} | wc -l\` \$t; done 2> /dev/null"
