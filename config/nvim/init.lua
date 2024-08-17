@@ -639,7 +639,7 @@ require("lazy").setup({
       "3rd/image.nvim",
       dependencies = { "nvim-lua/plenary.nvim", "leafo/magick" },
       cond = function()
-        return vim.fn.executable "magick" == 1 and ~is_windows
+        return vim.fn.executable "magick" == 1 and not is_windows
       end,
       config = function()
         require("image").setup({
