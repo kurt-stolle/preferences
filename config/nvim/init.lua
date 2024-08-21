@@ -147,7 +147,15 @@ require("lazy").setup({
           },
           integrations = {
             mason = true,
+            native_lsp = true,
+            cmp = true,
+            telescope = true,
+            notify = true,
+            neotree = true,
+            dap = true
           },
+          transparent_background = true,
+
         })
       end,
       init = function()
@@ -182,9 +190,9 @@ require("lazy").setup({
         })
       end,
       keys = {
-        { "nt", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
-        { "nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
-        { "nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
+        { "<leader>nt", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
+        { "<leader>nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
+        { "<leader>nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
       },
     },
     -- Copilot

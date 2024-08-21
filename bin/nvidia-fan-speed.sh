@@ -11,8 +11,7 @@ NVIDIA_SETTINGS='/usr/bin/nvidia-settings'
 VER=`awk '/NVIDIA/ {print $8}' /proc/driver/nvidia/version | cut -d . -f 1`
 
 # Drivers from 285.x.y on allow persistence mode setting
-if [ ${VER} -lt 285 ]
-then
+if [ ${VER} -lt 285 ]; then
     echo "Error: Current driver version is ${VER}. Driver version must be greater than 285."; exit 1;
 fi
 
