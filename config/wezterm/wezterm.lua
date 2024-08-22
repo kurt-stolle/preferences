@@ -32,31 +32,31 @@ if get_appearance():lower():find "light" then
 else
     local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
     --theme.background = "#000000"
-    --custom.tab_bar.background = "#040404"
-    --custom.tab_bar.inactive_tab.bg_color = "#0f0f0f"
-    --custom.tab_bar.new_tab.bg_color = "#080808"
+    --theme.tab_bar.background = "#040404"
+    --theme.tab_bar.inactive_tab.bg_color = "#000000"
+    --theme.tab_bar.new_tab.bg_color = "#080808"
 
-    config.win32_system_backdrop = "Acrylic"
+    config.win32_system_backdrop = "Tabbed" -- "Mica" -- "Mica"
     config.color_schemes = {
         ["Catppuccin Mocha Dark"] = theme
     }
     config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
-    config.window_background_opacity = 0.9        --0.2
+    config.window_background_opacity = 0.8        --0.2
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
     --     saturation = 1.2,
     --     brightness = 1.5,
     -- }
 end
-config.font = wez.font("JetBrainsMono Nerd Font", { weight = 500 })
+config.font = wez.font("JetBrainsMono Nerd Font", { weight = 400 })
 config.font_size = 10.0
 config.default_cursor_style = "BlinkingBar"
 config.enable_kitty_graphics = true
 config.window_padding = {
-    left = 0,
-    right = 0,
-    top = 0,
-    bottom = 0,
+    left = 2,
+    right = 2,
+    top = 2,
+    bottom = 2,
 }
 config.hide_tab_bar_if_only_one_tab = false
 config.window_close_confirmation = "NeverPrompt"
@@ -87,7 +87,7 @@ for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU } do
 end
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
-config.max_fps = 120
+config.max_fps = 80
 
 -- Bindings
 config.mouse_bindings = {
@@ -158,7 +158,7 @@ local is_windows = wez.target_triple == "x86_64-pc-windows-msvc"
 if is_windows then
     config.default_prog = { "pwsh.exe", "-NoLogo" }
     --config.default_domain = "WSL:Utils"
-    config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
+    --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
 else
     config.default_prog = { "bash" }
 end
