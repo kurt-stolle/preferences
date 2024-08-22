@@ -148,7 +148,15 @@ require("lazy").setup({
           },
           integrations = {
             mason = true,
+            native_lsp = true,
+            cmp = true,
+            telescope = true,
+            notify = true,
+            neotree = true,
+            dap = true
           },
+          transparent_background = true,
+
         })
       end,
       init = function()
@@ -183,9 +191,9 @@ require("lazy").setup({
         })
       end,
       keys = {
-        { "nt", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
-        { "nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
-        { "nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
+        { "<leader>nt", "<cmd>Neotree toggle<cr>", desc = "Toggle Neo-tree" },
+        { "<leader>nr", "<cmd>Neotree reveal<cr>", desc = "Reveal file in Neo-tree" },
+        { "<leader>nf", "<cmd>Neotree reveal<cr>", desc = "Find File in Neo-tree" },
       },
     },
     -- Copilot
@@ -489,6 +497,20 @@ require("lazy").setup({
       config = function()
       end,
     },
+    -- git
+    {
+      "tpope/vim-fugitive",
+      cmd = "Git",
+      keys = {
+        { "<leader>gs", "<cmd>Git<cr>",        desc = "Git Status" },
+        { "<leader>gc", "<cmd>Git commit<cr>", desc = "Git Commit" },
+        { "<leader>gp", "<cmd>Git push<cr>",   desc = "Git Push" },
+        { "<leader>gl", "<cmd>Git log<cr>",    desc = "Git Log" },
+        { "<leader>gd", "<cmd>Git diff<cr>",   desc = "Git Diff" },
+        { "<leader>gb", "<cmd>Git blame<cr>",  desc = "Git Blame" },
+      },
+    },
+
     -- fuzzy find
     {
       "nvim-telescope/telescope.nvim",
@@ -695,8 +717,8 @@ require("lazy").setup({
         { "<localleader>mh",  "<cmd>MoltenHideOutput<CR>",            desc = "hide output window" },
       }
     },
-    --[[ bufferline
-    {
+    -- bufferline
+    --[[{
       "akinsho/bufferline.nvim",
       version = "*",
       dependencies = "nvim-tree/nvim-web-devicons",
@@ -744,6 +766,12 @@ require("lazy").setup({
       dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
+      },
+      config = function()
+        require("telescope").load_extension "refactoring"
+      end,
+      keys = {
+        { "<leader>rf", "<cmd>lua require('telescope').extensions.refactoring.refactors()<cr>", desc = "Refactor" },
       },
     },
   },
