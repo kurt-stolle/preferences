@@ -36,12 +36,12 @@ else
     --theme.tab_bar.inactive_tab.bg_color = "#000000"
     --theme.tab_bar.new_tab.bg_color = "#080808"
 
-    config.win32_system_backdrop = "Tabbed" -- "Mica" -- "Mica"
+    config.win32_system_backdrop = "Mica" -- "Mica" -- "Mica"
     config.color_schemes = {
         ["Catppuccin Mocha Dark"] = theme
     }
     config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
-    config.window_background_opacity = 0.8        --0.2
+    config.window_background_opacity = 0.2        --0.2
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
     --     saturation = 1.2,
