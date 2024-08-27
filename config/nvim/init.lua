@@ -33,7 +33,7 @@ vim.g.node_host_prog = home .. '/.local/bin/nvim-node'
 -- clipboard
 -- this is handled by a plugin instead
 -- vim.g.clipboard = "unnamedplus"
---[[vim.g.clipboard = {
+vim.g.clipboard = {
   name = 'OSC 52',
   copy = {
     ["+"] = require('vim.ui.clipboard.osc52').copy,
@@ -44,7 +44,6 @@ vim.g.node_host_prog = home .. '/.local/bin/nvim-node'
     ["*"] = require('vim.ui.clipboard.osc52').paste,
   },
 }
-]]
 
 -- autocomplete action
 opt.completeopt = "menu,menuone,noselect"
