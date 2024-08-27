@@ -33,7 +33,7 @@ vim.g.node_host_prog = home .. '/.local/bin/nvim-node'
 -- clipboard
 -- this is handled by a plugin instead
 -- vim.g.clipboard = "unnamedplus"
-vim.g.clipboard = {
+--[[vim.g.clipboard = {
   name = 'OSC 52',
   copy = {
     ["+"] = require('vim.ui.clipboard.osc52').copy,
@@ -44,6 +44,7 @@ vim.g.clipboard = {
     ["*"] = require('vim.ui.clipboard.osc52').paste,
   },
 }
+]]
 
 -- autocomplete action
 opt.completeopt = "menu,menuone,noselect"
@@ -131,7 +132,7 @@ require("lazy").setup({
   spec = {
     -- clipboard (OSC52 support)
     -- https://github.com/ibhagwan/smartyank.nvim?tab=readme-ov-file#what-is-smartyank
-    --{ 'ibhagwan/smartyank.nvim',    lazy = false },
+    { 'ibhagwan/smartyank.nvim',     lazy = false },
     -- themes
     {
       "catppuccin/nvim",
