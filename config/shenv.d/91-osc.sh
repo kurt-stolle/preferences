@@ -12,7 +12,6 @@
 
 # shellcheck disable=SC2166
 if [ -z "${BASH_VERSION}" -a -z "${ZSH_NAME}" ] ; then
-  # Only for bash or zsh
   return 0
 fi
 
