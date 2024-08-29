@@ -36,12 +36,10 @@ else
     --theme.tab_bar.inactive_tab.bg_color = "#000000"
     --theme.tab_bar.new_tab.bg_color = "#080808"
 
-    config.win32_system_backdrop = "Mica" -- "Mica" -- "Mica"
     config.color_schemes = {
         ["Catppuccin Mocha Dark"] = theme
     }
     config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
-    config.window_background_opacity = 0.2        --0.2
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
     --     saturation = 1.2,
@@ -159,6 +157,8 @@ if is_windows then
     config.default_prog = { "pwsh.exe", "-NoLogo" }
     --config.default_domain = "WSL:Utils"
     --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
+    config.win32_system_backdrop = "Mica" -- "Mica" -- "Mica"
+    config.window_background_opacity = 0.2        --0.2
 else
     config.default_prog = { "bash" }
 end
