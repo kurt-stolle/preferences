@@ -6,13 +6,13 @@ local config = wez.config_builder()
 config:set_strict_mode(true)
 
 local function get_appearance()
-    -- First check `wez.gui` (not available to the mux server)
-    if wez.gui then
-        return wez.gui.get_appearance()
-    end
-    -- Second, check the COLOR_THEME environment variable
+    -- First check the COLOR_THEME environment variable
     if os.getenv("COLOR_THEME") then
         return os.getenv("COLOR_THEME")
+    end
+    -- Second check `wez.gui` (not available to the mux server)
+    if wez.gui then
+        return wez.gui.get_appearance()
     end
     -- Fallback to dark mode
     return "Dark"
