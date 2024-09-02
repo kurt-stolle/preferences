@@ -6,7 +6,9 @@ local config = wez.config_builder()
 config:set_strict_mode(true)
 
 local function get_appearance()
-    -- First check the COLOR_THEME environment variable
+    return "Dark"
+end
+  --[[  -- First check the COLOR_THEME environment variable
     if os.getenv("COLOR_THEME") then
         return os.getenv("COLOR_THEME")
     end
@@ -16,7 +18,7 @@ local function get_appearance()
     end
     -- Fallback to dark mode
     return "Dark"
-end
+end]]
 
 -- Appearance
 
@@ -58,12 +60,11 @@ config.window_padding = {
 }
 config.hide_tab_bar_if_only_one_tab = false
 config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 -- Launch menu
 config.launch_menu = {}
 
--- Rendering
+--[[ Rendering
 local function find_gpu(spec)
     for _, gpu in ipairs(wez.gui.enumerate_gpus()) do
         if gpu.backend:find(spec.backend) and gpu.device_type:find(spec.device_type) then
@@ -86,7 +87,7 @@ end
 config.front_end = "WebGpu"
 --config.webgpu_power_preference = "HighPerformance"
 --config.max_fps = 120
-
+]]
 -- Bindings
 config.mouse_bindings = {
     {
@@ -159,8 +160,9 @@ if is_windows then
     --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
     config.win32_system_backdrop = "Mica" -- "Mica" -- "Mica"
     config.window_background_opacity = 0.2        --0.2
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 else
-    config.default_prog = { "bash" }
+    config.default_prog = { "zsh" }
 end
 
 return config

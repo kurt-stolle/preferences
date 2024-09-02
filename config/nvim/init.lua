@@ -316,7 +316,18 @@ require("lazy").setup({
       "lervag/vimtex",
       ft = "tex",
       init = function()
-        vim.g.vimtex_options = "go here" -- ? from docs
+        vim.g.vimtex_compiler_method = 'latexmk'
+        vim.g.vimtex_compiler_latexmk = {
+          options = {
+            '-pdf',
+            '-pdflatex=lualatex',
+            '-verbose',
+            '-file-line-error',
+            '-synctex=1',
+            '-interaction=nonstopmode',
+          },
+        }
+        -- vim.g.vimtex_options = "go here" -- ? from docs
         if vim.fn.executable "zathura" == 1 then
           vim.g.vimtex_view_method = "zathura"
         elseif vim.fn.executable "sioyek" == 1 then
@@ -324,6 +335,34 @@ require("lazy").setup({
         elseif vim.fn.executable "sioyek.exe" == 1 then
           vim.g.vimtex_view_method = "sioyek.exe"
         end
+
+        -- Function to find the git root directory
+        local function find_git_root()
+          local current_dir = vim.fn.expand('%:p:h')
+          local git_root = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(current_dir) .. ' rev-parse --show-toplevel')
+              [1]
+          return git_root
+        end
+
+        -- Function to set up VimTeX compiler options
+        local function setup_vimtex_compiler()
+          local git_root = find_git_root()
+          if git_root then
+            local latexmkrc_path = git_root .. '/.latexmkrc'
+            if vim.fn.filereadable(latexmkrc_path) == 1 then
+              vim.g.vimtex_compiler_latexmk.options = vim.list_extend(
+                vim.g.vimtex_compiler_latexmk.options,
+                { '-r', latexmkrc_path }
+              )
+            end
+          end
+        end
+
+        -- Set up an autocommand to run the setup function when opening a LaTeX file
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = 'tex',
+          callback = setup_vimtex_compiler
+        })
       end
     },
     -- autocompletion

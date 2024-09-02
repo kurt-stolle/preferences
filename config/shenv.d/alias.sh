@@ -21,6 +21,7 @@ alias zja='zellij attach'
 # VIM to NeoVIM
 alias vi='nvim'
 alias vim='nvim'
+alias nv='nvim'
 
 # Git
 alias git-each='git submodule foreach'
