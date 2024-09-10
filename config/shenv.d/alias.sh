@@ -16,7 +16,30 @@ alias pip='python -m pip'
 
 # Zellij
 alias zj='zellij'
-alias zja='zellij attach'
+
+export ZELLIJ_AUTO_ATTACH='true'
+
+function zellij-default() {
+    if [[ -z "$ZELLIJ" ]]; then
+        if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+            zellij attach -c
+        else
+            zellij
+        fi
+
+        if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+            exit
+        fi
+    fi
+}
+function zellij-persistent() {
+    if [[ -z "$ZELLIJ" ]]; then
+        zellij attach -p
+    fi
+}
+
+alias zjp='zellij-persistent'
+alias zja='zellij-default'
 
 # VIM to NeoVIM
 alias vi='nvim'

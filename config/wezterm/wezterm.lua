@@ -5,10 +5,11 @@ local config = wez.config_builder()
 
 config:set_strict_mode(true)
 
-local function get_appearance()
+-- Utilities
+local function get_apperance()
     return "Dark"
 end
-  --[[  -- First check the COLOR_THEME environment variable
+--[[  -- First check the COLOR_THEME environment variable
     if os.getenv("COLOR_THEME") then
         return os.getenv("COLOR_THEME")
     end
@@ -20,11 +21,27 @@ end
     return "Dark"
 end]]
 
--- Appearance
 
-if get_appearance():lower():find "light" then
-    --config.win32_system_backdrop = "Mica"
-    config.color_scheme = "Catppuccin Latte" -- "iTerm2 Tango Light"
+-- OS specific configuration
+local is_windows = wez.target_triple == "x86_64-pc-windows-msvc"
+local is_light = get_apperance():lower():find "light"
+
+if is_windows then
+    config.default_prog       = { "pwsh.exe", "-NoLogo" }
+    --config.default_domain = "WSL:Utils"
+    --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+else
+    config.window_decorations = "NONE"
+    config.integrated_title_button_style = "Gnome"
+    config.default_prog = { os.getenv("SHELL") or "bash" }
+end
+
+-- Appearance
+-- "iTerm2 Tango Dark" or "iTerm2 Tango Light" also work well for some themes
+local theme = wez.color.get_builtin_schemes()[is_light and "Catppuccin Latte" or "Catppuccin Mocha"]
+assert(theme, "Color scheme not found")
+if is_light then
     config.window_background_opacity = 1.0
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
@@ -32,39 +49,78 @@ if get_appearance():lower():find "light" then
     --     brightness = 0.8,
     -- }
 else
-    local theme = wez.color.get_builtin_schemes()["Catppuccin Mocha"]
-    --theme.background = "#000000"
-    --theme.tab_bar.background = "#040404"
-    --theme.tab_bar.inactive_tab.bg_color = "#000000"
-    --theme.tab_bar.new_tab.bg_color = "#080808"
-
-    config.color_schemes = {
-        ["Catppuccin Mocha Dark"] = theme
-    }
-    config.color_scheme = "Catppuccin Mocha Dark" -- "iTerm2 Tango Dark"
+    if is_windows then
+        config.win32_system_backdrop = "Mica"
+        config.window_background_opacity = 0.2
+    else
+        config.window_background_opacity = 0.9
+    end
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
     --     saturation = 1.2,
     --     brightness = 1.5,
     -- }
+    --
+    theme.background = "#000000"
+    theme.tab_bar = {
+        background = theme.background,
+        inactive_tab_edge = 'rgba(28, 28, 28, 0.9)',
+        active_tab = {
+            bg_color = theme.background,
+            fg_color = '#c0c0c0',
+        },
+        inactive_tab = {
+            bg_color = theme.background,
+            fg_color = '#808080',
+        },
+        inactive_tab_hover = {
+            bg_color = theme.background,
+            fg_color = '#808080',
+        },
+    }
 end
-config.font = wez.font("JetBrainsMono Nerd Font", { weight = 400 })
-config.font_size = 10.0
-config.default_cursor_style = "BlinkingBar"
-config.enable_kitty_graphics = true
-config.window_padding = {
-    left = 2,
-    right = 2,
-    top = 2,
-    bottom = 2,
+config.command_palette_font_size = 12.0
+config.command_palette_bg_color  = '#000000'
+config.color_schemes             = {
+    ["User"] = theme
 }
-config.hide_tab_bar_if_only_one_tab = false
+config.color_scheme              = "User"
+
+-- Misc
+config.enable_wayland            = false
+--config.canonicalize_pasted_newlines               = 'None'
+--config.term                                       = 'wezterm'
+config.font                      = wez.font("JetBrainsMono Nerd Font", { weight = 400 })
+config.font_size                 = 10.0
+config.default_cursor_style      = "BlinkingBar"
+
+-- Support KITTY features
+config.enable_kitty_graphics     = true
+--config.enable_kitty_keyboard                      = true
+
+-- Window
+--config.adjust_window_size_when_changing_font_size = false
 config.window_close_confirmation = "NeverPrompt"
+--[[config.window_padding                             = {
+    left = 1,
+    right = 1,
+    top = 1,
+    bottom = 1,
+}]]
+--config.window_frame                               = {
+--    font_size = is_windows and 12.0 or 14.0,
+--    active_titlebar_bg = theme.background,
+--    inactive_titlebar_bg = theme.background,
+--}
+-- Tab bar
+config.enable_tab_bar               = true
+config.hide_tab_bar_if_only_one_tab = false
+config.use_fancy_tab_bar            = false
 
 -- Launch menu
-config.launch_menu = {}
+config.launch_menu                  = {}
 
---[[ Rendering
+-- Rendering
 local function find_gpu(spec)
     for _, gpu in ipairs(wez.gui.enumerate_gpus()) do
         if gpu.backend:find(spec.backend) and gpu.device_type:find(spec.device_type) then
@@ -77,17 +133,16 @@ end
 INTEGRATED_GPU = { backend = "Vulkan", device_type = "IntegratedGpu" }
 DISCRETE_GPU = { backend = "Vulkan", device_type = "DiscreteGpu" }
 
-for _, spec in ipairs { INTEGRATED_GPU, DISCRETE_GPU } do
+for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU, DISCRETE_GPU } do
     local gpu = find_gpu(spec)
     if gpu then
         config.webgpu_preferred_adapter = gpu
         break
     end
 end
-config.front_end = "WebGpu"
 --config.webgpu_power_preference = "HighPerformance"
---config.max_fps = 120
-]]
+config.max_fps = 120
+config.front_end = "OpenGL"
 -- Bindings
 config.mouse_bindings = {
     {
@@ -151,18 +206,4 @@ config.keys = {
     { key = "x",               mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
 
 }
--- OS specific configuration
-local is_windows = wez.target_triple == "x86_64-pc-windows-msvc"
-
-if is_windows then
-    config.default_prog = { "pwsh.exe", "-NoLogo" }
-    --config.default_domain = "WSL:Utils"
-    --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
-    config.win32_system_backdrop = "Mica" -- "Mica" -- "Mica"
-    config.window_background_opacity = 0.2        --0.2
-    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
-else
-    config.default_prog = { "zsh" }
-end
-
 return config

@@ -313,6 +313,12 @@ require("lazy").setup({
     { "Bilal2453/luvit-meta",        lazy = true },
     -- latex
     {
+      "andrewferrier/wrapping.nvim",
+      config = function()
+        require("wrapping").setup()
+      end
+    },
+    {
       "lervag/vimtex",
       ft = "tex",
       init = function()
@@ -324,6 +330,7 @@ require("lazy").setup({
             '-verbose',
             '-file-line-error',
             '-synctex=1',
+            '-shell-escape',
             '-interaction=nonstopmode',
           },
         }
@@ -332,8 +339,6 @@ require("lazy").setup({
           vim.g.vimtex_view_method = "zathura"
         elseif vim.fn.executable "sioyek" == 1 then
           vim.g.vimtex_view_method = "sioyek"
-        elseif vim.fn.executable "sioyek.exe" == 1 then
-          vim.g.vimtex_view_method = "sioyek.exe"
         end
 
         -- Function to find the git root directory
