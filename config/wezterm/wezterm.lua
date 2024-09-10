@@ -52,8 +52,9 @@ else
     if is_windows then
         config.win32_system_backdrop = "Mica"
         config.window_background_opacity = 0.2
+        theme.background = "#000000"
     else
-        config.window_background_opacity = 0.9
+        config.window_background_opacity = 1.0
     end
     -- config.foreground_text_hsb = {
     --     hue = 1.0,
@@ -61,7 +62,6 @@ else
     --     brightness = 1.5,
     -- }
     --
-    theme.background = "#000000"
     theme.tab_bar = {
         background = theme.background,
         inactive_tab_edge = 'rgba(28, 28, 28, 0.9)',
