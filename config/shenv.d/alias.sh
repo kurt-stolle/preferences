@@ -34,7 +34,7 @@ function zellij-default() {
 }
 function zellij-persistent() {
     if [[ -z "$ZELLIJ" ]]; then
-        zellij attach -p
+        zellij attach -c default
     fi
 }
 
