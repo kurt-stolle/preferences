@@ -132,11 +132,20 @@ require("lazy").setup({
   spec = {
     -- clipboard (OSC52 support)
     -- https://github.com/ibhagwan/smartyank.nvim?tab=readme-ov-file#what-is-smartyank
-    { 'ibhagwan/smartyank.nvim',     lazy = false },
+    {
+      'ibhagwan/smartyank.nvim',
+      cond = function()
+        return not vim.g.vscode
+      end,
+      lazy = false
+    },
     -- themes
     {
       "catppuccin/nvim",
       lazy = true,
+      cond = function()
+        return not vim.g.vscode
+      end,
       priority = 1000,
       name = "catppuccin",
       config = function()
@@ -168,6 +177,9 @@ require("lazy").setup({
     {
       "nvim-neo-tree/neo-tree.nvim",
       branch = "v3.x",
+      cond = function()
+        return not vim.g.vscode
+      end,
       dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
@@ -199,6 +211,9 @@ require("lazy").setup({
     -- Copilot
     {
       "github/copilot.vim",
+      cond = function()
+        return not vim.g.vscode
+      end,
       priority = 999,
       lazy = false
     },
@@ -214,6 +229,9 @@ require("lazy").setup({
     {
       "williamboman/mason.nvim",
       event = "VeryLazy",
+      cond = function()
+        return not vim.g.vscode
+      end,
       opts = function(_, opts)
         if not opts.ensure_installed then
           opts.ensure_installed = {}
@@ -229,6 +247,9 @@ require("lazy").setup({
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
       },
+      cond = function()
+        return not vim.g.vscode
+      end,
       config = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -464,6 +485,9 @@ require("lazy").setup({
     -- debugger
     {
       "mfussenegger/nvim-dap",
+      cond = function()
+        return not vim.g.vscode
+      end,
       dependencies = {
         -- fancy UI for the debugger
         {
@@ -560,6 +584,9 @@ require("lazy").setup({
       "nvim-telescope/telescope.nvim",
       cmd = "Telescope",
       version = false,
+      cond = function()
+        return not vim.g.vscode
+      end,
       dependencies = { "nvim-lua/plenary.nvim" },
       keys = {
         --{ "<leader>sf",      "<cmd>Telescope git_files<cr>",                     desc = "Find Files (root dir)" },
@@ -599,7 +626,7 @@ require("lazy").setup({
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
       cond = function()
-        return not is_windows
+        return not is_windows and not vim.g.vscode
       end,
       config = function()
         require('telescope').load_extension('fzf')
@@ -615,7 +642,10 @@ require("lazy").setup({
         --persist_size = false,   -- always open with the same size
         open_mapping = "<C-s>", -- s for shell
         direction = "float",
-      }
+      },
+      cond = function()
+        return not vim.g.vscode
+      end
     },
     -- status line
     {
@@ -629,6 +659,9 @@ require("lazy").setup({
           section_separators = '',
         }
       },
+      cond = function()
+        return not vim.g.vscode
+      end
     },
     -- conda
     {
@@ -637,7 +670,7 @@ require("lazy").setup({
       lazy = false,
       version = "*",
       cond = function()
-        return vim.fn.executable "conda" == 1
+        return vim.fn.executable "conda" == 1 and not vim.g.vscode
       end,
     },
     -- hydra
@@ -686,7 +719,7 @@ require("lazy").setup({
       'willothy/wezterm.nvim',
       config = true,
       cond = function()
-        return vim.fn.executable "wezterm" == 1
+        return vim.fn.executable "wezterm" == 1 and not vim.g.vscode
       end,
     },
     -- images
@@ -696,7 +729,7 @@ require("lazy").setup({
       "3rd/image.nvim",
       dependencies = { "nvim-lua/plenary.nvim", "leafo/magick" },
       cond = function()
-        return vim.fn.executable "magick" == 1 and not is_windows
+        return vim.fn.executable "magick" == 1 and not is_windows and not vim.g.vscode
       end,
       config = function()
         require("image").setup({
