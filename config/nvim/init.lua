@@ -851,6 +851,40 @@ require("lazy").setup({
         { "<leader>rf", "<cmd>lua require('telescope').extensions.refactoring.refactors()<cr>", desc = "Refactor" },
       },
     },
+    -- Obsidian-like notetaking
+    {
+      "epwalsh/obsidian.nvim",
+      version = "*",
+      cond = function()
+        return not vim.g.vscode
+      end,
+      ft = "markdown",
+      lazy = true,
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-lua/popup.nvim",
+        "nvim-telescope/telescope.nvim",
+        "nvim-treesitter/nvim-treesitter",
+      },
+      setup = function()
+        local function read_workpaces()
+          -- Read environment variable "OBSIDIAN_WORKSPACES", split by semicolons
+          local paths = vim.split(vim.env.OBSIDIAN_WORKSPACES or "", ";")
+          local workspaces = {}
+          for _, path in ipairs(paths) do
+            -- Take the last part of the path as the workspace name
+            local name = vim.fn.fnamemodify(path, ":t")
+            table.insert(workspaces, { path = path, name = name })
+          end
+          return workspaces
+        end
+        require("obsidian").setup(
+          {
+            workspaces = read_workspaces(),
+          }
+        )
+      end,
+    },
   },
 })
 
