@@ -133,7 +133,7 @@ end
 INTEGRATED_GPU = { backend = "Vulkan", device_type = "IntegratedGpu" }
 DISCRETE_GPU = { backend = "Vulkan", device_type = "DiscreteGpu" }
 
-for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU, DISCRETE_GPU } do
+for _, spec in ipairs { INTEGRATED_GPU, DISCRETE_GPU } do
     local gpu = find_gpu(spec)
     if gpu then
         config.webgpu_preferred_adapter = gpu
@@ -142,7 +142,7 @@ for _, spec in ipairs { DISCRETE_GPU, INTEGRATED_GPU, DISCRETE_GPU } do
 end
 --config.webgpu_power_preference = "HighPerformance"
 config.max_fps = 120
-config.front_end = "OpenGL"
+--config.front_end = "OpenGL"
 -- Bindings
 config.mouse_bindings = {
     {
