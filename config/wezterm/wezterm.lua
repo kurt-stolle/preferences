@@ -32,8 +32,9 @@ if is_windows then
     --config.ssh_backend = "Ssh2" -- TODO check whether this is more stable than libssh
     config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 else
-    config.window_decorations = "NONE"
-    config.integrated_title_button_style = "Gnome"
+    --config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+    --config.window_decorations = "NONE"
+    --config.integrated_title_button_style = "Gnome"
     config.default_prog = { os.getenv("SHELL") or "bash" }
 end
 
@@ -87,11 +88,11 @@ config.color_schemes             = {
 config.color_scheme              = "User"
 
 -- Misc
-config.enable_wayland            = false
+config.enable_wayland            = true
 --config.canonicalize_pasted_newlines               = 'None'
---config.term                                       = 'wezterm'
+config.term                      = 'wezterm'
 config.font                      = wez.font("JetBrainsMono Nerd Font", { weight = 400 })
-config.font_size                 = 10.0
+config.font_size                 = 11.0
 config.default_cursor_style      = "BlinkingBar"
 
 -- Support KITTY features
@@ -130,19 +131,19 @@ local function find_gpu(spec)
     return nil
 end
 
-INTEGRATED_GPU = { backend = "Vulkan", device_type = "IntegratedGpu" }
-DISCRETE_GPU = { backend = "Vulkan", device_type = "DiscreteGpu" }
-
-for _, spec in ipairs { INTEGRATED_GPU, DISCRETE_GPU } do
-    local gpu = find_gpu(spec)
-    if gpu then
-        config.webgpu_preferred_adapter = gpu
-        break
-    end
-end
---config.webgpu_power_preference = "HighPerformance"
-config.max_fps = 120
---config.front_end = "OpenGL"
+--  INTEGRATED_GPU = { backend = "Vulkan", device_type = "IntegratedGpu" }
+--  DISCRETE_GPU = { backend = "Vulkan", device_type = "DiscreteGpu" }
+--
+--  for _, spec in ipairs { INTEGRATED_GPU, DISCRETE_GPU } do
+--      local gpu = find_gpu(spec)
+--      if gpu then
+--          config.webgpu_preferred_adapter = gpu
+--          break
+--      end
+--  end
+config.webgpu_power_preference = "LowPower"
+--config.max_fps = 120
+config.front_end = "WebGpu"
 -- Bindings
 config.mouse_bindings = {
     {
@@ -204,6 +205,5 @@ config.keys = {
     { key = "9",               mods = "LEADER",       action = wez.action { ActivateTab = 8 } },
     { key = "&",               mods = "LEADER|SHIFT", action = wez.action { CloseCurrentTab = { confirm = true } } },
     { key = "x",               mods = "LEADER",       action = wez.action { CloseCurrentPane = { confirm = true } } },
-
 }
 return config
